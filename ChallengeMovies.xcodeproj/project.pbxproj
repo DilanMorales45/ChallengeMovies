@@ -7,26 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		AD8158A92CD018DD00A46DFE /* challengeMovies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = challengeMovies.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD8158A92CD018DD00A46DFE /* ChallengeMovies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChallengeMovies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AD8158BE2CD018E000A46DFE /* Exceptions for "challengeMovies" folder in "challengeMovies" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = AD8158A82CD018DD00A46DFE /* challengeMovies */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AD8158AB2CD018DD00A46DFE /* challengeMovies */ = {
+		AD8158AB2CD018DD00A46DFE /* ChallengeMovies */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				AD8158BE2CD018E000A46DFE /* Exceptions for "challengeMovies" folder in "challengeMovies" target */,
-			);
-			path = challengeMovies;
+			path = ChallengeMovies;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +32,7 @@
 		AD8158A02CD018DD00A46DFE = {
 			isa = PBXGroup;
 			children = (
-				AD8158AB2CD018DD00A46DFE /* challengeMovies */,
+				AD8158AB2CD018DD00A46DFE /* ChallengeMovies */,
 				AD8158AA2CD018DD00A46DFE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,7 +40,7 @@
 		AD8158AA2CD018DD00A46DFE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AD8158A92CD018DD00A46DFE /* challengeMovies.app */,
+				AD8158A92CD018DD00A46DFE /* ChallengeMovies.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AD8158A82CD018DD00A46DFE /* challengeMovies */ = {
+		AD8158A82CD018DD00A46DFE /* ChallengeMovies */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AD8158BF2CD018E000A46DFE /* Build configuration list for PBXNativeTarget "challengeMovies" */;
+			buildConfigurationList = AD8158BF2CD018E000A46DFE /* Build configuration list for PBXNativeTarget "ChallengeMovies" */;
 			buildPhases = (
 				AD8158A52CD018DD00A46DFE /* Sources */,
 				AD8158A62CD018DD00A46DFE /* Frameworks */,
@@ -74,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AD8158AB2CD018DD00A46DFE /* challengeMovies */,
+				AD8158AB2CD018DD00A46DFE /* ChallengeMovies */,
 			);
-			name = challengeMovies;
+			name = ChallengeMovies;
 			packageProductDependencies = (
 			);
 			productName = challengeMovies;
-			productReference = AD8158A92CD018DD00A46DFE /* challengeMovies.app */;
+			productReference = AD8158A92CD018DD00A46DFE /* ChallengeMovies.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -98,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AD8158A42CD018DD00A46DFE /* Build configuration list for PBXProject "challengeMovies" */;
+			buildConfigurationList = AD8158A42CD018DD00A46DFE /* Build configuration list for PBXProject "ChallengeMovies" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -112,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AD8158A82CD018DD00A46DFE /* challengeMovies */,
+				AD8158A82CD018DD00A46DFE /* ChallengeMovies */,
 			);
 		};
 /* End PBXProject section */
@@ -147,7 +134,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5TM69A4QRS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = challengeMovies/Info.plist;
+				INFOPLIST_FILE = ChallengeMovies/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -175,7 +162,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5TM69A4QRS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = challengeMovies/Info.plist;
+				INFOPLIST_FILE = ChallengeMovies/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -316,7 +303,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AD8158A42CD018DD00A46DFE /* Build configuration list for PBXProject "challengeMovies" */ = {
+		AD8158A42CD018DD00A46DFE /* Build configuration list for PBXProject "ChallengeMovies" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AD8158C22CD018E000A46DFE /* Debug */,
@@ -325,7 +312,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AD8158BF2CD018E000A46DFE /* Build configuration list for PBXNativeTarget "challengeMovies" */ = {
+		AD8158BF2CD018E000A46DFE /* Build configuration list for PBXNativeTarget "ChallengeMovies" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AD8158C02CD018E000A46DFE /* Debug */,
