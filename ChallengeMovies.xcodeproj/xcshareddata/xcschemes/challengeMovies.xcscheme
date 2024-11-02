@@ -18,7 +18,7 @@
                BlueprintIdentifier = "AD8158A82CD018DD00A46DFE"
                BuildableName = "ChallengeMovies.app"
                BlueprintName = "ChallengeMovies"
-               ReferencedContainer = "container:challengeMovies.xcodeproj">
+               ReferencedContainer = "container:ChallengeMovies.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,7 +47,7 @@
             BlueprintIdentifier = "AD8158A82CD018DD00A46DFE"
             BuildableName = "ChallengeMovies.app"
             BlueprintName = "ChallengeMovies"
-            ReferencedContainer = "container:challengeMovies.xcodeproj">
+            ReferencedContainer = "container:ChallengeMovies.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "AD8158A82CD018DD00A46DFE"
             BuildableName = "ChallengeMovies.app"
             BlueprintName = "ChallengeMovies"
-            ReferencedContainer = "container:challengeMovies.xcodeproj">
+            ReferencedContainer = "container:ChallengeMovies.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
