@@ -7,62 +7,110 @@
 
 import UIKit
 
+// MARK: - Constants
+let LocalizeUserDefaultKey = "LocalizeUserDefaultKey"
+var LocalizeDefaultLanguage = "en"
+
 class LoginViewController: UIViewController {
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.text = "Cinemark"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 36)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    // MARK: - Properties
+    private let loginView: LoginView
     
-    private let emailLabel: UITextField = {
-        let text = UITextField()
-        text.backgroundColor = .lightGray
-        text.attributedPlaceholder = NSAttributedString(
-            string: "Ingresa tu correo",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
-        )
-        text.borderStyle = .roundedRect
-        text.translatesAutoresizingMaskIntoConstraints = false
-        return text
-    }()
+    init(loginView: LoginView){
+        self.loginView = loginView
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    private let accessButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Acceder", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 8
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configureView()
         
-        view.backgroundColor = .white
-        view.addSubview(titleLabel)
-        view.addSubview(emailLabel)
-        view.addSubview(accessButton)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40),
-            titleLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-            emailLabel.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor),
-            emailLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor, constant: 80),
-            emailLabel.widthAnchor.constraint(equalToConstant: 200),
-            emailLabel.heightAnchor.constraint(equalToConstant: 40),
-            accessButton.centerXAnchor.constraint(equalTo: emailLabel.centerXAnchor),
-            accessButton.centerYAnchor.constraint(equalTo: emailLabel.centerYAnchor, constant: 50),
-            accessButton.widthAnchor.constraint(equalToConstant: 100),
-            accessButton.heightAnchor.constraint(equalToConstant: 40),
-        ])
+        loginView.translateSpanishButton.addTarget(self, action: #selector(changeLanguageSpanish), for: .touchUpInside)
+        loginView.translateEnglishButton.addTarget(self, action: #selector(changeLanguageEnglish), for: .touchUpInside)
+        loginView.accessButton.addTarget(self, action: #selector(doSignIn), for: .touchUpInside)
+        refreshLanguage()
     }
     
+    // MARK: - Configure View Method
     
+    private func configureView() {
+        self.view = self.loginView
+        self.loginView.delegate = self
+    }
+    
+    // MARK: - Alert Message Method
+    
+    private func showErrorAlertMessage(_ message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Aceptar", style: .default) { _ in
+            alertController.dismiss(animated: true)
+        }
+        alertController.addAction(action)
+        self.present(alertController, animated: true)
+    }
+
+    // MARK: - Language Change Methods
+    private func refreshLanguage() {
+        loginView.emailLabel.attributedPlaceholder = NSAttributedString(
+            string: "LoginViewController.refreshLanguage.EmailMessage".translate(),
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
+        )
+        loginView.accessButton.setTitle("LoginViewController.refreshLanguage.AccessButton".translate(), for: .normal)
+    }
+
+    @objc private func changeLanguageSpanish() {
+        LocalizeDefaultLanguage = "es-419"
+        UserDefaults.standard.setValue(LocalizeDefaultLanguage, forKey: LocalizeUserDefaultKey)
+        refreshLanguage()
+    }
+
+    @objc private func changeLanguageEnglish() {
+        LocalizeDefaultLanguage = "en"
+        UserDefaults.standard.setValue(LocalizeDefaultLanguage, forKey: LocalizeUserDefaultKey)
+        refreshLanguage()
+    }
+    
+    @objc private func doSignIn() {
+        loginView.delegate?.loginView(self.loginView, didSignWith: self.loginView.emailLabel.text)
+    }
+    
+}
+
+// MARK: - String Extension for Localization
+extension String {
+    func translate() -> String {
+        if let path = Bundle.main.path(forResource: LocalizeDefaultLanguage, ofType: "lproj"),
+           let bundle = Bundle(path: path) {
+            return NSLocalizedString(self, bundle: bundle, comment: "")
+        }
+        return ""
+    }
+}
+
+// MARK: - Build Extension for LoginViewController
+extension LoginViewController {
+    class func build() -> LoginViewController {
+        let view = LoginView()
+        let controller = LoginViewController(loginView: view)
+        return controller
+    }
+}
+
+// MARK: - Construction LoginViewDelegate to events of LoginViewController
+extension LoginViewController: LoginViewDelegate {
+    func loginView(_ view: LoginView, didSignWith user: String?) {
+        guard let user = user, !user.isEmpty else {
+            self.showErrorAlertMessage("Ingresa un correo")
+            return
+        }
+        
+        print("Bienvenido")
+    }
+
 }

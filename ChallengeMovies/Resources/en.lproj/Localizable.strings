@@ -5,3 +5,6 @@
   Created by Dilan Alejandro Morales Estupinan on 28/10/24.
   
 */
+
+"LoginViewController.refreshLanguage.EmailMessage" = "Email";
+"LoginViewController.refreshLanguage.AccessButton" = "Log In";
