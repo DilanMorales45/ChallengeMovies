@@ -30,16 +30,16 @@ class CustomNavigationBar: UIView {
     private func setupView() {
         self.backgroundColor = .systemBlue
         
-        // Configurar el botón de regreso
+        
         backButton.setImage(UIImage(systemName: "arrow.left"), for: .normal)
         backButton.tintColor = .white
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         
-        // Configurar la etiqueta del título
+        
         titleLabel.textColor = .white
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         
-        // Añadir subviews
+        
         addSubview(backButton)
         addSubview(titleLabel)
         
@@ -58,8 +58,6 @@ class CustomNavigationBar: UIView {
     }
 
     @objc private func backButtonTapped() {
-        // Lógica para regresar
-        // Aquí puedes enviar un evento a tu controlador de vista
         print("Back button tapped")
     }
 }

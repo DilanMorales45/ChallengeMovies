@@ -15,7 +15,6 @@ class TabBarController: UITabBarController {
         configureTabBarAppearance()
     }
     
-    // Configura los elementos de la tab bar
     private func setupTabs() {
 //        Controllers que se vana utilizar 
 //        let movieVC = MoviesController()
@@ -34,14 +33,13 @@ class TabBarController: UITabBarController {
         setViewControllers([movieNav, favoriteNav], animated: true)
     }
     
-    // Configura la apariencia de la tab bar
     private func configureTabBarAppearance() {
         tabBar.backgroundColor = .white
-        tabBar.tintColor = .systemBlue // Color del ítem seleccionado
-        tabBar.unselectedItemTintColor = .gray // Color de ítems no seleccionados
+        tabBar.tintColor = .systemBlue
+        tabBar.unselectedItemTintColor = .gray
     }
     
-    // Crea un UINavigationController con un título y una imagen
+    
     private func createNavController(title: String,
                                       image: UIImage?,
                                       selectedImage: UIImage?,

@@ -13,7 +13,8 @@ protocol LoginViewDelegate: AnyObject {
 
 class LoginView: UIView {
 
-   weak var delegate: LoginViewDelegate?
+    // MARK: - Properties
+    weak var delegate: LoginViewDelegate?
     
     // MARK: - UI Components
     lazy var titleLabel: UILabel = {

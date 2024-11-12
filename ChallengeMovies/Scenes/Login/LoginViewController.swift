@@ -112,10 +112,9 @@ extension LoginViewController: LoginViewDelegate {
         
         print("Bienvenido")
         
-        // Crear el MoviesViewController
         let moviesViewController = MoviesViewController()
                
-        // Usamos UINavigationController para hacer el push
+    
 //        if let navigationController = self.navigationController {
 //            navigationController.pushViewController(moviesViewController, animated: true)
 //        } else {
@@ -123,8 +122,8 @@ extension LoginViewController: LoginViewDelegate {
 //            self.present(moviesViewController, animated: true, completion: nil)
 //        }
         
-        // Presentamos el MoviesViewController sin barra de navegación
-        moviesViewController.modalPresentationStyle = .fullScreen // O .overFullScreen si quieres mantener la transición visual
+        
+        moviesViewController.modalPresentationStyle = .fullScreen
         self.present(moviesViewController, animated: true, completion: nil)
     }
 
