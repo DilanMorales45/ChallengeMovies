@@ -19,7 +19,7 @@ let house = [
     Device(title: "Pantallas", imageName: "display.2"),
     Device(title: "Apple TV", imageName: "appletv")
 ]
-
+/*
 class MoviesGeneralController: UIViewController, SearchBarViewDelegate {
     
     var data = house // Los datos iniciales que mostrarás en la colección
@@ -120,4 +120,62 @@ extension MoviesGeneralController: UICollectionViewDataSource {
 
 extension MoviesGeneralController: UICollectionViewDelegate {
     // Implementa cualquier método necesario para manejar la interacción con las celdas
+}*/
+
+// MARK: - MoviesView (Vista)
+class MoviesView: UIView {
+    
+    // MARK: - Propiedades
+    let searchBarView = SearchBarView() // Barra de búsqueda
+    
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = .init(width: 380, height: 190)
+        layout.minimumLineSpacing = 20
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
+    // MARK: - Inicializador
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.setupViews()
+    }
+    
+    // MARK: - Métodos de configuración de vistas
+    private func setupViews() {
+        backgroundColor = .white
+        
+        // Agregar y configurar la barra de búsqueda
+        addSubview(searchBarView)
+        searchBarView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            searchBarView.topAnchor.constraint(equalTo: topAnchor),
+            searchBarView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            searchBarView.heightAnchor.constraint(equalToConstant: 60) // Ajusta la altura de la barra de búsqueda
+        ])
+        
+        // Agregar y configurar la colección
+        addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 10),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+    
+    // MARK: - Métodos para actualizar la vista
+    func reloadCollectionView() {
+        collectionView.reloadData()
+    }
 }

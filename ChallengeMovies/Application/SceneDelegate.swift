@@ -18,7 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: scene)
-        self.window?.rootViewController = LoginViewController.build()
+        
+        let loginViewController = LoginViewController.build()
+        
+//        let navigationController = UINavigationController(rootViewController: loginViewController)
+        self.window?.rootViewController = loginViewController
         self.window?.makeKeyAndVisible()
     }
 

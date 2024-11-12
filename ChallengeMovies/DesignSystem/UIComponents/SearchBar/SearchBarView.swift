@@ -37,6 +37,7 @@ class SearchBarView: UIView, UISearchResultsUpdating {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Buscar dispositivos"
+        searchController.title = "Cinemark"
         
         // Agregar la search bar a la vista
         addSubview(searchController.searchBar)
