@@ -16,7 +16,6 @@ class FavoritesViewController: UIViewController {
         setupCollectionView()
         view.addSubview(favoritesView)
         
-        favoritesView.frame = view.bounds // Ajustar el tamaño de la vista
     }
     
     private func setupCollectionView() {

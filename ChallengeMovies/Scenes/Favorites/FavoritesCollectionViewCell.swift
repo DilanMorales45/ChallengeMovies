@@ -8,6 +8,33 @@
 import UIKit
 
 class FavoritesCollectionViewCell: UICollectionViewCell {
+    
+    private lazy var stackMovie: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var imageStackFavorite: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        return imageView
+    }()
+    
+    private lazy var labelStackFavorite: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 24)
+        label.textAlignment = .left
+        label.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(stackMovie)
