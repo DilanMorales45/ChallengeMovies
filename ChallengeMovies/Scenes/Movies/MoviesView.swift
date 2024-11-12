@@ -52,11 +52,11 @@ class MoviesView: UIView {
     private func setupViews() {
         backgroundColor = .white
         
-        
         addSubview(searchBarView)
         searchBarView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchBarView.topAnchor.constraint(equalTo: topAnchor),
+//            searchBarView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            searchBarView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             searchBarView.leadingAnchor.constraint(equalTo: leadingAnchor),
             searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor),
             searchBarView.heightAnchor.constraint(equalToConstant: 60)
@@ -65,10 +65,10 @@ class MoviesView: UIView {
         
         addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 4),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     

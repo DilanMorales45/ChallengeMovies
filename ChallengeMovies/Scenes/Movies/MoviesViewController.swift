@@ -22,7 +22,7 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
         moviesView.searchBarView.delegate = self
         moviesView.collectionView.dataSource = self
         moviesView.collectionView.delegate = self
-        view = moviesView
+        self.view = moviesView
     }
     
     override func viewDidLoad() {
@@ -38,11 +38,10 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     func didUpdateSearchResults(searchText: String) {
         
         if searchText.isEmpty {
-            
+            filteredData = data
         } else {
             filteredData = data.filter { $0.title.lowercased().contains(searchText.lowercased()) }
         }
-        
         
         moviesView.reloadCollectionView()
     }
