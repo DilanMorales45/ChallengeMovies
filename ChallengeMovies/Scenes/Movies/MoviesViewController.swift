@@ -11,7 +11,7 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     
     // MARK: - Properties
     var data = house
-    var filteredData: [Device] = [] 
+    var filteredData: [Device] = []
     private var moviesView: MoviesView!
 
     
@@ -27,7 +27,6 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         moviesView.collectionView.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: "MoviesCollectionViewCell")
         
         filteredData = data

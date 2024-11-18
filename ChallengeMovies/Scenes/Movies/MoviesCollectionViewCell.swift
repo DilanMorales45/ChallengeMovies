@@ -49,7 +49,7 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             StackMovie.leadingAnchor.constraint(equalTo: leadingAnchor),
             StackMovie.trailingAnchor.constraint(equalTo: trailingAnchor),
-            StackMovie.topAnchor.constraint(equalTo: topAnchor),
+            StackMovie.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             StackMovie.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
