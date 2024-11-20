@@ -112,19 +112,6 @@ extension LoginViewController: LoginViewDelegate {
         
         print("Bienvenido")
         
-        let moviesViewController = MoviesViewController()
-               
-    
-//        if let navigationController = self.navigationController {
-//            navigationController.pushViewController(moviesViewController, animated: true)
-//        } else {
-//            // En caso de que no esté dentro de un UINavigationController, lo presentamos de forma modal
-//            self.present(moviesViewController, animated: true, completion: nil)
-//        }
-        
-        
-        moviesViewController.modalPresentationStyle = .fullScreen
-        self.present(moviesViewController, animated: true, completion: nil)
     }
 
 }

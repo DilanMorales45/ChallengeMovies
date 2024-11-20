@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomNavigationBar: UIView {
+class NavigationBar: UIView {
 
     var title: String? {
         didSet {

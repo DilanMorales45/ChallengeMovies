@@ -12,17 +12,23 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     // MARK: - Properties
     var data = house
     var filteredData: [Device] = []
-    private var moviesView: MoviesView!
+    private let moviesView: MoviesView
 
+    init(moviesView: MoviesView) {
+        self.moviesView = moviesView
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle Methods
     override func loadView() {
-        
-        moviesView = MoviesView()
+        self.view = moviesView
         moviesView.searchBarView.delegate = self
         moviesView.collectionView.dataSource = self
         moviesView.collectionView.delegate = self
-        self.view = moviesView
     }
     
     override func viewDidLoad() {
