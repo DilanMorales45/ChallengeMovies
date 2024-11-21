@@ -7,7 +7,12 @@
 
 import UIKit
 
-class DetailView: UIView {
+protocol DetailsViewDelegate: AnyObject {
+    func detailsView (_ view: DetailsView, didHitWith: String?)
+}
+class DetailsView: UIView {
+    
+    weak var delegate: DetailsViewDelegate?
     
     private lazy var StackHorizontal: UIStackView = {
         let stackView = UIStackView()

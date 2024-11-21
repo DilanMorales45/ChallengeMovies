@@ -38,13 +38,15 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
         
         self.filteredData = data
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationStyle.configure(self)
+    }
     private func configureView() {
         self.view = moviesView
         self.moviesView.searchBarView.delegate = self
         self.moviesView.collectionView.dataSource = self
         self.moviesView.collectionView.delegate = self
-        self.navigationStyle.configure(self)
     }
     
     // MARK: - SearchBarViewDelegate
@@ -100,5 +102,15 @@ extension MoviesViewController {
 
 // MARK: - UICollectionViewDelegate
 extension MoviesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Llama a la función openDetails() o navega directamente a la pantalla de detalles
+        openDetails()
+    }
     
+    func openDetails (){
+        let jumpToController = DetailsViewController.build()
+//        jumpToController.title =  // Configura el controller con la información del movie
+
+        self.navigationController?.pushViewController(jumpToController, animated: true)
+    }
 }
