@@ -15,9 +15,11 @@ class LoginViewController: UIViewController {
     
     // MARK: - Properties
     private let loginView: LoginView
+    private let navigationStyle: NavigationBarStyle
     
-    init(loginView: LoginView){
+    init(loginView: LoginView, navigationStyle: NavigationBarStyle){
         self.loginView = loginView
+        self.navigationStyle = navigationStyle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,6 +44,7 @@ class LoginViewController: UIViewController {
     private func configureView() {
         self.view = self.loginView
         self.loginView.delegate = self
+        self.navigationStyle.configure(self)
     }
     
     // MARK: - Alert Message Method
@@ -97,7 +100,7 @@ extension String {
 extension LoginViewController {
     class func build() -> LoginViewController {
         let view = LoginView()
-        let controller = LoginViewController(loginView: view)
+        let controller = LoginViewController(loginView: view, navigationStyle: NavigationBarHide())
         return controller
     }
 }
@@ -112,6 +115,8 @@ extension LoginViewController: LoginViewDelegate {
         
         print("Bienvenido")
         
+        let jumpToController = MoviesViewController.build()
+        self.navigationController?.pushViewController(jumpToController, animated: true)
     }
 
 }

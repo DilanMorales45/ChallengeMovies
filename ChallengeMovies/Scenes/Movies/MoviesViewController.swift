@@ -10,12 +10,15 @@ import UIKit
 class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectionViewDataSource {
     
     // MARK: - Properties
+    
     var data = house
     var filteredData: [Device] = []
     private let moviesView: MoviesView
+    private let navigationStyle: NavigationBarStyle
 
-    init(moviesView: MoviesView) {
+    init(moviesView: MoviesView, navigationStyle: NavigationBarStyle) {
         self.moviesView = moviesView
+        self.navigationStyle = navigationStyle
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -24,18 +27,24 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     }
     
     // MARK: - Lifecycle Methods
+    
     override func loadView() {
-        self.view = moviesView
-        moviesView.searchBarView.delegate = self
-        moviesView.collectionView.dataSource = self
-        moviesView.collectionView.delegate = self
+        self.configureView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        moviesView.collectionView.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: "MoviesCollectionViewCell")
+        self.moviesView.collectionView.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: "MoviesCollectionViewCell")
         
-        filteredData = data
+        self.filteredData = data
+    }
+    
+    private func configureView() {
+        self.view = moviesView
+        self.moviesView.searchBarView.delegate = self
+        self.moviesView.collectionView.dataSource = self
+        self.moviesView.collectionView.delegate = self
+        self.navigationStyle.configure(self)
     }
     
     // MARK: - SearchBarViewDelegate
@@ -78,6 +87,15 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
         return cell
     }
 
+}
+
+// MARK: - Build Extension for MoviesViewController
+extension MoviesViewController {
+    class func build() -> MoviesViewController {
+        let view = MoviesView()
+        let controller = MoviesViewController(moviesView: view, navigationStyle: NavigationBarHide())
+        return controller
+    }
 }
 
 // MARK: - UICollectionViewDelegate
