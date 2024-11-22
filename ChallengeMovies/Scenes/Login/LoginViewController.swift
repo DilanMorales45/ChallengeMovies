@@ -115,9 +115,10 @@ extension LoginViewController: LoginViewDelegate {
         
         print("Bienvenido")
         
-        let jumpToController = MoviesViewController.build()
-        self.navigationController?.pushViewController(jumpToController, animated: true)
+        let moviesViewController = MoviesViewController.build()
+        self.navigationController?.pushViewController(moviesViewController, animated: true)
 //        self.navigationController?.popToViewController(LoginViewController.build(), animated: true)
+        self.navigationController?.viewControllers = [moviesViewController]
     }
 
 }

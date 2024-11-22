@@ -9,19 +9,36 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
-    private let favoritesView = FavoritesView()
+    private let favoritesView: FavoritesView
+    private let navigationStyle: NavigationBarStyle
+
+    init(favoritesView: FavoritesView,navigationStyle: NavigationBarStyle) {
+        self.favoritesView = favoritesView
+        self.navigationStyle = navigationStyle
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
-        view.addSubview(favoritesView)
-        
+        self.configure()
+        self.favoritesView.collectionView.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
     }
     
-    private func setupCollectionView() {
-        favoritesView.collectionView.dataSource = self
-        favoritesView.collectionView.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationStyle.configure(self)
     }
+    
+    private func configure() {
+        self.view = favoritesView
+        self.favoritesView.backgroundColor = .white
+        self.favoritesView.collectionView.dataSource = self
+    }
+
 }
 
 extension FavoritesViewController: UICollectionViewDataSource {
@@ -47,4 +64,10 @@ extension FavoritesViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
+extension FavoritesViewController {
+    class func build() -> FavoritesViewController {
+        let view = FavoritesView()
+        let controller = FavoritesViewController(favoritesView: view, navigationStyle: NavigationBarHide())
+        return controller
+    }
+}

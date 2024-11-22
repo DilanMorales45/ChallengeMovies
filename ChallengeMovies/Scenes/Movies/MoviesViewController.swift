@@ -15,10 +15,12 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     var filteredData: [Device] = []
     private let moviesView: MoviesView
     private let navigationStyle: NavigationBarStyle
+//    private let tabBar: TabBarController
 
     init(moviesView: MoviesView, navigationStyle: NavigationBarStyle) {
         self.moviesView = moviesView
         self.navigationStyle = navigationStyle
+        
         super.init(nibName: nil, bundle: nil)
     }
     
