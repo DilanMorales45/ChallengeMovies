@@ -7,45 +7,6 @@
 
 import UIKit
 
-//class TabBarView: UIView {
-//    
-//    private let tabBar = UITabBar()
-//    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        self.configureTabBar()
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        super.init(coder: coder)
-//    }
-//    
-//    private func configureTabBar() {
-//        self.tabBar.backgroundColor = .white
-//        self.tabBar.tintColor = .systemBlue
-//        self.tabBar.unselectedItemTintColor = .gray
-//        
-//        let tabBarItemMovie = UITabBarItem(title: "Peliculas",
-//                                      image: UIImage(systemName: "square.grid.2x2"),
-//                                      selectedImage: UIImage(systemName: "square.grid.2x2.fill"))
-//        
-//        let tabBarItemFavorite = UITabBarItem(title: "Favoritos",
-//                                           image: UIImage(systemName: "star"),
-//                                           selectedImage: UIImage(systemName: "star.fill"))
-//        
-//        self.tabBar.setItems([tabBarItemMovie, tabBarItemFavorite], animated: true)
-//        
-//        addSubview(tabBar)
-//        NSLayoutConstraint.activate([
-//            tabBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-//            tabBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-//            tabBar.topAnchor.constraint(equalTo: topAnchor),
-//            tabBar.bottomAnchor.constraint(equalTo: bottomAnchor)
-//        ])
-//    }
-//}
-
-
 class TabBar: UITabBarController {
 
     init() {
@@ -89,7 +50,6 @@ class TabBar: UITabBarController {
 extension TabBar {
     class func build() -> TabBar {
         let controller = TabBar()
-        controller.title = "Cinemark"
         return controller
     }
 }

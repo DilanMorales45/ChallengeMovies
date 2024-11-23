@@ -75,8 +75,6 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
         
         
         let model = filteredData[indexPath.row]
-        
-        
         cell.configure(model: model)
         
         
@@ -98,7 +96,6 @@ extension MoviesViewController {
     class func build() -> MoviesViewController {
         let view = MoviesView()
         let controller = MoviesViewController(moviesView: view, navigationStyle: NavigationBarHide())
-        controller.title = "Cinemark"
         return controller
     }
 }

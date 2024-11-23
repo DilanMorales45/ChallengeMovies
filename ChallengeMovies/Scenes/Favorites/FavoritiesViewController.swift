@@ -25,9 +25,13 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
+    override func loadView() {
+        self.configureView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configure()
         self.favoritesView.setTitle("Cinemark")
         self.favoritesView.collectionView.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
         
@@ -39,9 +43,9 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
         self.navigationStyle.configure(self)
     }
     
-    private func configure() {
+    private func configureView() {
         self.view = favoritesView
-        self.favoritesView.backgroundColor = .white
+        self.favoritesView.searchBarView.delegate = self
         self.favoritesView.collectionView.dataSource = self
     }
     
@@ -59,13 +63,16 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return house.count
+        return filteredData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCollectionViewCell", for: indexPath) as! FavoritesCollectionViewCell
         
-        // Configura la apariencia de la celda
+        
+        let model = filteredData[indexPath.row]
+        cell.configure(model: model)
+        
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 20
         cell.layer.masksToBounds = true
@@ -73,9 +80,6 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
         cell.layer.shadowOpacity = 0.4
         cell.layer.shadowOffset = CGSize(width: 0, height: 0)
         cell.layer.shadowRadius = 5
-        
-        let model = house[indexPath.row]
-        cell.configure(model: model)
         
         return cell
     }
