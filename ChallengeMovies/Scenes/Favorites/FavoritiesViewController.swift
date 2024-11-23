@@ -28,6 +28,7 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configure()
+        self.favoritesView.setTitle("Cinemark")
         self.favoritesView.collectionView.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
         
         self.filteredData = data

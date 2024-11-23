@@ -26,6 +26,15 @@ class MoviesView: UIView {
     // MARK: - UI Components
     let searchBarView = SearchBarView()
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textColor = .black
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -52,10 +61,17 @@ class MoviesView: UIView {
     private func setupViews() {
         backgroundColor = .white
         
+        
+        addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
+            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
+        
         addSubview(searchBarView)
         searchBarView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchBarView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            searchBarView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             searchBarView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             searchBarView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             searchBarView.heightAnchor.constraint(equalToConstant: 70)
@@ -74,5 +90,10 @@ class MoviesView: UIView {
     // MARK: - Setup Method
     func reloadCollectionView() {
         collectionView.reloadData()
+    }
+    
+    // MARK: - Set Title
+    func setTitle(_ title: String) {
+        titleLabel.text = title
     }
 }

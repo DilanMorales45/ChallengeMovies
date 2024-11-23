@@ -33,6 +33,7 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.moviesView.setTitle("Cinemark")
         self.moviesView.collectionView.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: "MoviesCollectionViewCell")
         
         self.filteredData = data
