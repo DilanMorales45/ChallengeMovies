@@ -7,8 +7,11 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
+class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollectionViewDataSource {
     
+    // MARK: - Properties
+    var data = house
+    var filteredData: [Device] = []
     private let favoritesView: FavoritesView
     private let navigationStyle: NavigationBarStyle
 
@@ -26,6 +29,8 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         self.configure()
         self.favoritesView.collectionView.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
+        
+        self.filteredData = data
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,10 +43,20 @@ class FavoritesViewController: UIViewController {
         self.favoritesView.backgroundColor = .white
         self.favoritesView.collectionView.dataSource = self
     }
-
-}
-
-extension FavoritesViewController: UICollectionViewDataSource {
+    
+    // MARK: - SearchBarViewDelegate
+    
+    func didUpdateSearchResults(searchText: String) {
+        
+        if searchText.isEmpty {
+            filteredData = data
+        } else {
+            filteredData = data.filter { $0.title.lowercased().contains(searchText.lowercased()) }
+        }
+        
+        favoritesView.reloadCollectionView()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return house.count
     }
@@ -63,7 +78,9 @@ extension FavoritesViewController: UICollectionViewDataSource {
         
         return cell
     }
+
 }
+
 extension FavoritesViewController {
     class func build() -> FavoritesViewController {
         let view = FavoritesView()

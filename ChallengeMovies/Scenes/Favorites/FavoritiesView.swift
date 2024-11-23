@@ -9,6 +9,9 @@ import UIKit
 
 class FavoritesView: UIView {
     
+    // MARK: - UI Components
+    let searchBarView = SearchBarView()
+    
     private lazy var stackMovie: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -50,23 +53,37 @@ class FavoritesView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        self.setupView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupView()
+        self.setupView()
     }
     
     private func setupView() {
         backgroundColor = .white
-        addSubview(collectionView)
         
+        addSubview(searchBarView)
+        searchBarView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            searchBarView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            searchBarView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            searchBarView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            searchBarView.heightAnchor.constraint(equalToConstant: 70)
         ])
+        
+        addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 4),
+            collectionView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    // MARK: - Setup Method
+    func reloadCollectionView() {
+        collectionView.reloadData()
     }
 }

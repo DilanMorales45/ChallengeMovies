@@ -55,7 +55,7 @@ class SearchBarView: UIView, UISearchBarDelegate {
         
         searchBar.delegate = self
         searchBar.placeholder = "Buscar dispositivos"
-        searchBar.showsCancelButton = true
+        searchBar.showsCancelButton = false
                 
         addSubview(searchBar)
         searchBar.translatesAutoresizingMaskIntoConstraints = false

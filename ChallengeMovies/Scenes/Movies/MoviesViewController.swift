@@ -10,17 +10,14 @@ import UIKit
 class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectionViewDataSource {
     
     // MARK: - Properties
-    
     var data = house
     var filteredData: [Device] = []
     private let moviesView: MoviesView
     private let navigationStyle: NavigationBarStyle
-//    private let tabBar: TabBarController
 
     init(moviesView: MoviesView, navigationStyle: NavigationBarStyle) {
         self.moviesView = moviesView
         self.navigationStyle = navigationStyle
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,10 +37,12 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
         
         self.filteredData = data
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationStyle.configure(self)
     }
+    
     private func configureView() {
         self.view = moviesView
         self.moviesView.searchBarView.delegate = self
@@ -98,6 +97,7 @@ extension MoviesViewController {
     class func build() -> MoviesViewController {
         let view = MoviesView()
         let controller = MoviesViewController(moviesView: view, navigationStyle: NavigationBarHide())
+        controller.title = "Cinemark"
         return controller
     }
 }

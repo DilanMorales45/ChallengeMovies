@@ -7,30 +7,65 @@
 
 import UIKit
 
-class TabBarView: UIView {
-    private let tabBar = UITabBar()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.configureTabBar()
+//class TabBarView: UIView {
+//    
+//    private let tabBar = UITabBar()
+//    
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        self.configureTabBar()
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        super.init(coder: coder)
+//    }
+//    
+//    private func configureTabBar() {
+//        self.tabBar.backgroundColor = .white
+//        self.tabBar.tintColor = .systemBlue
+//        self.tabBar.unselectedItemTintColor = .gray
+//        
+//        let tabBarItemMovie = UITabBarItem(title: "Peliculas",
+//                                      image: UIImage(systemName: "square.grid.2x2"),
+//                                      selectedImage: UIImage(systemName: "square.grid.2x2.fill"))
+//        
+//        let tabBarItemFavorite = UITabBarItem(title: "Favoritos",
+//                                           image: UIImage(systemName: "star"),
+//                                           selectedImage: UIImage(systemName: "star.fill"))
+//        
+//        self.tabBar.setItems([tabBarItemMovie, tabBarItemFavorite], animated: true)
+//        
+//        addSubview(tabBar)
+//        NSLayoutConstraint.activate([
+//            tabBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+//            tabBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+//            tabBar.topAnchor.constraint(equalTo: topAnchor),
+//            tabBar.bottomAnchor.constraint(equalTo: bottomAnchor)
+//        ])
+//    }
+//}
+
+
+class TabBar: UITabBarController {
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTabBar() {
-        self.tabBar.backgroundColor = .white
-        self.tabBar.tintColor = .systemBlue
-        self.tabBar.unselectedItemTintColor = .gray
-    }
-}
-
-class TabBarController: UITabBarController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTabs()
+        self.setupTabs()
+        self.configureTabBarAppearance()
+    }
+    
+    private func configureTabBarAppearance() {
+        tabBar.backgroundColor = .white
+        tabBar.tintColor = .systemBlue
+        tabBar.unselectedItemTintColor = .gray
     }
     
     private func setupTabs() {
@@ -38,29 +73,23 @@ class TabBarController: UITabBarController {
         let movieVC = MoviesViewController.build()
         let favoriteVC = FavoritesViewController.build()
         
-        let movieNav = createNavController(title: "Peliculas",
+        movieVC.tabBarItem = UITabBarItem(title: "Peliculas",
                                             image: UIImage(systemName: "square.grid.2x2"),
-                                            selectedImage: UIImage(systemName: "square.grid.2x2.fill"),
-                                            rootViewController: movieVC)
+                                            selectedImage: UIImage(systemName: "square.grid.2x2.fill"))
         
-        let favoriteNav = createNavController(title: "Favoritos",
+        favoriteVC.tabBarItem = UITabBarItem(title: "Favoritos",
                                               image: UIImage(systemName: "star"),
-                                              selectedImage: UIImage(systemName: "star.fill"),
-                                              rootViewController: favoriteVC)
+                                              selectedImage: UIImage(systemName: "star.fill"))
 
-        setViewControllers([movieNav, favoriteNav], animated: true)
+        setViewControllers([movieVC, favoriteVC], animated: true)
     }
     
-    private func createNavController(title: String,
-                                      image: UIImage?,
-                                      selectedImage: UIImage?,
-                                      rootViewController: UIViewController) -> UINavigationController {
-        let navController = UINavigationController(rootViewController: rootViewController)
-        navController.tabBarItem.title = title
-        navController.tabBarItem.image = image
-        navController.tabBarItem.selectedImage = selectedImage
-        
-        return navController
-    }
 }
 
+extension TabBar {
+    class func build() -> TabBar {
+        let controller = TabBar()
+        controller.title = "Cinemark"
+        return controller
+    }
+}
