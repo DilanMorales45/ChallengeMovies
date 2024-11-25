@@ -94,12 +94,8 @@ struct MoviesService {
     }
     
     private func parseJSON(movieData: Data) -> [MovieModel]? {
-        
-        let decoder = JSONDecoder()
-        
         do {
-            let decodeData = try decoder.decode(MoviesData.self, from: movieData)
-            let movie = decodeData.results?.map{
+            let movie = try JSONDecoder().decode(MoviesData.self, from: movieData).results?.map{
                 MovieModel(title: $0.title ?? "", releaseDate: $0.releaseDate, voteAverage: $0.voteAverage)
             }
             

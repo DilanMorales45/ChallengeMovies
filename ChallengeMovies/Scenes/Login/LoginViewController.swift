@@ -118,7 +118,6 @@ extension LoginViewController: LoginViewDelegate {
         
         api.performRequest(for: .popularMovies) { movies in
             DispatchQueue.main.async {
-                // Si hay películas, muestra los títulos
                 if let movies = movies {
                     for movie in movies {
                         print("Película: \(movie.title), Fecha de estreno: \(movie.releaseDate ?? ""), Promedio de votos: \(movie.voteAverage ?? 0.0)")
