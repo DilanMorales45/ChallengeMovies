@@ -9,8 +9,8 @@ import Foundation
 
 struct MovieModel {
     let title: String
-    let releaseDate: String
-    let voteAverage: Double
+    let releaseDate: String?
+    let voteAverage: Double?
 }
 
 struct MoviesData: Codable {
@@ -28,6 +28,20 @@ struct Result: Codable {
     let video: Bool?
     let voteAverage: Double?
     let voteCount: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case adult
+        case backdropPath = "backdrop_path"
+        case genreIDS = "genre_ids"
+        case id
+        case originalTitle = "original_title"
+        case overview, popularity
+        case posterPath = "poster_path"
+        case releaseDate = "release_date"
+        case title, video
+        case voteAverage = "vote_average"
+        case voteCount = "vote_count"
+    }
 }
 
 struct MoviesService {
@@ -67,6 +81,10 @@ struct MoviesService {
                 return
             }
             
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Data received: \(jsonString)")
+            }
+            
             if let movies = self.parseJSON(movieData: data) {
                 completion(movies)
             } else {
@@ -82,8 +100,9 @@ struct MoviesService {
         do {
             let decodeData = try decoder.decode(MoviesData.self, from: movieData)
             let movie = decodeData.results?.map{
-                MovieModel(title: $0.title ?? "", releaseDate: $0.releaseDate ?? "", voteAverage: $0.voteAverage ?? 0.0)
+                MovieModel(title: $0.title ?? "", releaseDate: $0.releaseDate, voteAverage: $0.voteAverage)
             }
+            
             return movie
         } catch {
             return nil
