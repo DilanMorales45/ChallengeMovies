@@ -64,7 +64,7 @@ class ErrorView: UIView {
         
         NSLayoutConstraint.activate([
             errorIconImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            errorIconImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -20),
+            errorIconImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -60),
             errorIconImageView.widthAnchor.constraint(equalToConstant: 50),
             errorIconImageView.heightAnchor.constraint(equalToConstant: 50),
             
@@ -72,5 +72,10 @@ class ErrorView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
+    }
+    
+    func updateErrorMessage (searchText: String) {
+        keySearchLabel.text = "'\(searchText)\'"
+        errorMessageLabel.text = "No se encontraron resultados para la búsqueda de:"
     }
 }

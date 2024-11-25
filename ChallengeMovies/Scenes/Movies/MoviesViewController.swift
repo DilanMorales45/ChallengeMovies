@@ -14,10 +14,12 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
     var filteredData: [Device] = []
     private let moviesView: MoviesView
     private let navigationStyle: NavigationBarStyle
-
-    init(moviesView: MoviesView, navigationStyle: NavigationBarStyle) {
+    private let errorView: ErrorView
+    
+    init(moviesView: MoviesView, navigationStyle: NavigationBarStyle,errorView: ErrorView) {
         self.moviesView = moviesView
         self.navigationStyle = navigationStyle
+        self.errorView = errorView
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,6 +63,12 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
             filteredData = data.filter { $0.title.lowercased().contains(searchText.lowercased()) }
         }
         
+        if filteredData.isEmpty {
+            showErrorView(searchText: searchText)
+        } else {
+            showCollectionView()
+        }
+        
         moviesView.reloadCollectionView()
     }
     
@@ -88,14 +96,35 @@ class MoviesViewController: UIViewController, SearchBarViewDelegate, UICollectio
         
         return cell
     }
-
+    
+    private func showErrorView (searchText: String) {
+        
+        self.errorView.updateErrorMessage(searchText: searchText)
+        
+        self.moviesView.collectionView.isHidden = true
+        self.moviesView.addSubview(errorView)
+        
+        self.errorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.errorView.topAnchor.constraint(equalTo: moviesView.searchBarView.bottomAnchor),
+            self.errorView.leadingAnchor.constraint(equalTo: moviesView.safeAreaLayoutGuide.leadingAnchor),
+            self.errorView.trailingAnchor.constraint(equalTo: moviesView.safeAreaLayoutGuide.trailingAnchor),
+            self.errorView.bottomAnchor.constraint(equalTo: moviesView.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
+    private func showCollectionView () {
+        errorView.removeFromSuperview()
+        moviesView.collectionView.isHidden = false
+        moviesView.reloadCollectionView()
+    }
 }
 
 // MARK: - Build Extension for MoviesViewController
 extension MoviesViewController {
     class func build() -> MoviesViewController {
         let view = MoviesView()
-        let controller = MoviesViewController(moviesView: view, navigationStyle: NavigationBarHide())
+        let controller = MoviesViewController(moviesView: view, navigationStyle: NavigationBarHide(), errorView: ErrorView())
         return controller
     }
 }

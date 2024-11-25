@@ -14,10 +14,12 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
     var filteredData: [Device] = []
     private let favoritesView: FavoritesView
     private let navigationStyle: NavigationBarStyle
+    private let errorView: ErrorView
 
-    init(favoritesView: FavoritesView,navigationStyle: NavigationBarStyle) {
+    init(favoritesView: FavoritesView,navigationStyle: NavigationBarStyle,errorView: ErrorView) {
         self.favoritesView = favoritesView
         self.navigationStyle = navigationStyle
+        self.errorView = errorView
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,6 +61,12 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
             filteredData = data.filter { $0.title.lowercased().contains(searchText.lowercased()) }
         }
         
+        if filteredData.isEmpty {
+            showErrorView(searchText: searchText)
+        } else {
+            showCollectionView()
+        }
+        
         favoritesView.reloadCollectionView()
     }
     
@@ -84,12 +92,33 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
         return cell
     }
 
+    private func showErrorView (searchText: String) {
+        
+        errorView.updateErrorMessage(searchText: searchText)
+        
+        favoritesView.collectionView.isHidden = true
+        favoritesView.addSubview(errorView)
+        
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: favoritesView.searchBarView.bottomAnchor),
+            errorView.leadingAnchor.constraint(equalTo: favoritesView.safeAreaLayoutGuide.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: favoritesView.safeAreaLayoutGuide.trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: favoritesView.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
+    private func showCollectionView () {
+        errorView.removeFromSuperview()
+        favoritesView.collectionView.isHidden = false
+        favoritesView.reloadCollectionView()
+    }
 }
 
 extension FavoritesViewController {
     class func build() -> FavoritesViewController {
         let view = FavoritesView()
-        let controller = FavoritesViewController(favoritesView: view, navigationStyle: NavigationBarHide())
+        let controller = FavoritesViewController(favoritesView: view, navigationStyle: NavigationBarHide(), errorView: ErrorView())
         return controller
     }
 }
