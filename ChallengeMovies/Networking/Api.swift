@@ -10,7 +10,7 @@ import Foundation
 struct MovieModel {
     let title: String
     let releaseDate: String
-    let popularity: Double
+    let voteAverage: Double
 }
 
 struct MoviesData: Codable {
@@ -38,7 +38,7 @@ struct MoviesService {
         var endpoint: String {
             switch self {
             case .popularMovies:
-                return "/movie/popular"
+                return "movie/popular"
             }
         }
         
@@ -51,32 +51,28 @@ struct MoviesService {
         }
         
         var url: URL? {
-            URL(string: "https://\(domain)/3/\(self.endpoint)?api_key=\(self.apiKey)&language=en")
+            URL(string: "https://\(self.domain)/3/\(self.endpoint)?api_key=\(self.apiKey)&language=en")
         }
         
     }
     
-    func performRequest(for endpoint: API) {
+    func performRequest(for endpoint: API, completion: @escaping ([MovieModel]?) -> Void) {
         
-        if let url = endpoint.url {
-            
-            let session = URLSession(configuration: .default)
-            
-            let task = session.dataTask(with: url) { data, response, error in
-                if error != nil {
-                    print(error ?? "No obtiene error")
-                }
-                
-                if let safeData = data {
-                    if let movie = self.parseJSON(movieData: safeData) {
-                        print(movie)
-                    }
-                }
+        guard let url = endpoint.url else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "Error desconocido")
+                completion(nil)
+                return
             }
             
-            task.resume()
-            
-        }
+            if let movies = self.parseJSON(movieData: data) {
+                completion(movies)
+            } else {
+                completion(nil)
+            }
+        }.resume()
     }
     
     private func parseJSON(movieData: Data) -> [MovieModel]? {
@@ -86,9 +82,8 @@ struct MoviesService {
         do {
             let decodeData = try decoder.decode(MoviesData.self, from: movieData)
             let movie = decodeData.results?.map{
-                MovieModel(title: $0.title ?? "", releaseDate: $0.releaseDate ?? "", popularity: $0.popularity ?? 0.0)
+                MovieModel(title: $0.title ?? "", releaseDate: $0.releaseDate ?? "", voteAverage: $0.voteAverage ?? 0.0)
             }
-            
             return movie
         } catch {
             return nil
