@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 struct Device {
     let title: String
@@ -25,8 +26,9 @@ class MoviesView: UIView {
     
     // MARK: - UI Components
     let searchBarView = SearchBarView()
+    private var listAdapter: ListAdapter
     
-    let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.textColor = .black
@@ -35,65 +37,71 @@ class MoviesView: UIView {
         return label
     }()
     
-    lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = .init(width: 380, height: 190)
-        layout.minimumLineSpacing = 20
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
     // MARK: - Initializer
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(listAdapter: ListAdapter) {
+        self.listAdapter = listAdapter
+        super.init(frame: .zero)
         self.setupViews()
+        self.configureAdapters()
+        
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setupViews()
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Setup Method
     private func setupViews() {
-        backgroundColor = .white
-        
-        
-        addSubview(titleLabel)
+        self.backgroundColor = .white
+        self.addSubview(titleLabel)
+        self.addSubview(searchBarView)
+        self.addSubview(collectionView)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
-            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        ])
-        
-        addSubview(searchBarView)
-        searchBarView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            searchBarView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            searchBarView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            searchBarView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            searchBarView.heightAnchor.constraint(equalToConstant: 70)
-        ])
-        
-        
-        addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 4),
-            collectionView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.searchBarView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor),
+            self.searchBarView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.searchBarView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor),
+            self.collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
+    private func configureAdapters() {
+        self.listAdapter.setCollectionView(self.collectionView)
+    }
+    
     // MARK: - Setup Method
-    func reloadCollectionView() {
-        collectionView.reloadData()
+    func reloadCollectionView(_ datasource: [commonDetails]) {
+        self.listAdapter.datasource = datasource
+        self.collectionView.reloadData()
     }
     
     // MARK: - Set Title
     func setTitle(_ title: String) {
         titleLabel.text = title
     }
+}
+
+struct MoviesViewRepresentable: UIViewRepresentable {
+    func makeUIView(context: Context) -> MoviesView{
+        let movies = [commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
+        let listAdapter = MoviesSimpleListAdapter()
+        let view = MoviesView(listAdapter: listAdapter)
+        view.reloadCollectionView(movies)
+        return view
+    }
+    
+    func updateUIView(_ uiView: MoviesView, context: Context) { }
+}
+
+#Preview {
+    MoviesViewRepresentable()
 }
