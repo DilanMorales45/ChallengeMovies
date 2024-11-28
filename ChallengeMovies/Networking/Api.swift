@@ -8,7 +8,7 @@
 import Foundation
 
 struct MovieModel {
-    let title: String
+    let title: String?
     let releaseDate: String?
     let voteAverage: Double?
 }
@@ -96,7 +96,7 @@ struct MoviesService {
     private func parseJSON(movieData: Data) -> [MovieModel]? {
         do {
             let movie = try JSONDecoder().decode(MoviesData.self, from: movieData).results?.map{
-                MovieModel(title: $0.title ?? "", releaseDate: $0.releaseDate, voteAverage: $0.voteAverage)
+                MovieModel(title: $0.title, releaseDate: $0.releaseDate, voteAverage: $0.voteAverage)
             }
             
             return movie
