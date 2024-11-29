@@ -31,7 +31,7 @@ class TabBar: UITabBarController {
     
     private func setupTabs() {
 //        Controllers que se vana utilizar 
-        let movieVC = MoviesViewController.build()
+        let movieVC = MoviesViewController.buildSimpleList()
         let favoriteVC = FavoritesViewController.build()
         
         movieVC.tabBarItem = UITabBarItem(title: "Peliculas",

@@ -31,6 +31,7 @@ class MoviesView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.text = "tintos"
         label.textColor = .black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -59,13 +60,11 @@ class MoviesView: UIView {
     // MARK: - Setup Method
     private func setupViews() {
         self.backgroundColor = .white
-        self.addSubview(titleLabel)
         self.addSubview(searchBarView)
         self.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
-            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.searchBarView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor),
+            self.searchBarView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.searchBarView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.searchBarView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.searchBarView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor),
             self.collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

@@ -16,7 +16,7 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
         self.collectionView = collectionView
         self.collectionView?.delegate = self
         self.collectionView?.dataSource = self
-        self.collectionView?.register(FavoritesCollectionViewCell().self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
+        self.collectionView?.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
         self.collectionView?.collectionViewLayout = self.layout()
     }
     

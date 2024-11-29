@@ -15,6 +15,7 @@ class MoviesViewController: UIViewController {
     init(moviesView: MoviesView, navigationStyle: NavigationBarStyle) {
         self.moviesView = moviesView
         self.navigationStyle = navigationStyle
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -23,6 +24,7 @@ class MoviesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.moviesView.setTitle("Cinemark")
         self.configureView()
     }
     
@@ -31,13 +33,13 @@ class MoviesViewController: UIViewController {
         self.fetchMovies()
     }
     
-    private func configureView() {
+    private func configureView() {
         self.view = self.moviesView
     }
     
-    private func fetchMovies() {
+    private func fetchMovies() {
         let movies = [commonDetails.mock,commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
-        self.moviesView.reloadData(movies)
+        self.moviesView.reloadCollectionView(movies)
     }
     
 }
@@ -47,7 +49,7 @@ extension MoviesViewController {
     class func buildSimpleList() -> MoviesViewController {
         let adapter = MoviesSimpleListAdapter()
         let navStyle = NavigationBarHide()
-        let view = moviesView(listAdapter: adapter)
+        let view = MoviesView(listAdapter: adapter)
         let controller = MoviesViewController(moviesView: view, navigationStyle: navStyle)
         return controller
     }

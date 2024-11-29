@@ -78,8 +78,8 @@ class FavoritesViewController: UIViewController, SearchBarViewDelegate, UICollec
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCollectionViewCell", for: indexPath) as! FavoritesCollectionViewCell
         
         
-        let model = filteredData[indexPath.row]
-        cell.configure(model: model)
+//        let model = filteredData[indexPath.row]
+//        cell.configure(model: model)
         
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 20
