@@ -13,8 +13,8 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .darkGray
-        lbl.font = .systemFont(ofSize: 18, weight: .semibold)
+        lbl.textColor = .black
+        lbl.font = .systemFont(ofSize: 19, weight: .semibold)
         return lbl
     }()
 
@@ -23,8 +23,8 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         lbl.text = "Fecha de lanzamiento:"
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .darkGray
-        lbl.font = .systemFont(ofSize: 15, weight: .light)
+        lbl.textColor = .systemGray
+        lbl.font = UIFont.italicSystemFont(ofSize: 15)
         return lbl
     }()
     
@@ -32,8 +32,8 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .darkGray
-        lbl.font = .systemFont(ofSize: 15, weight: .light)
+        lbl.textColor = .systemGray
+        lbl.font = UIFont.italicSystemFont(ofSize: 15)
         return lbl
     }()
     

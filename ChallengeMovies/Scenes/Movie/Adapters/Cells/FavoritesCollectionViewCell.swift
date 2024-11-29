@@ -23,8 +23,8 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
+        lbl.font = UIFont.italicSystemFont(ofSize: 15)
         lbl.textColor = .darkGray
-        lbl.font = .systemFont(ofSize: 15, weight: .light)
         return lbl
     }()
     
