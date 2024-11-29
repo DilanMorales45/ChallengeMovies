@@ -32,7 +32,7 @@ class TabBar: UITabBarController {
     private func setupTabs() {
 //        Controllers que se vana utilizar 
         let movieVC = MoviesViewController.buildSimpleList()
-        let favoriteVC = FavoritesViewController.build()
+        let favoriteVC = FavoritesViewController.buildGridList()
         
         movieVC.tabBarItem = UITabBarItem(title: "Peliculas",
                                             image: UIImage(systemName: "square.grid.2x2"),

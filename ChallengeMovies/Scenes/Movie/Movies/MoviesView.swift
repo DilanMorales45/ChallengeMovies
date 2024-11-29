@@ -6,32 +6,18 @@
 //
 
 import UIKit
-import SwiftUI
-
-struct Device {
-    let title: String
-    let imageName: String
-}
-
-let house = [
-    Device(title: "Laptop", imageName: "laptopcomputer"),
-    Device(title: "Mac mini", imageName: "macmini"),
-    Device(title: "Mac Pro", imageName: "macpro.gen3"),
-    Device(title: "Pantallas", imageName: "display.2"),
-    Device(title: "Apple TV", imageName: "appletv")
-]
-
 
 class MoviesView: UIView {
     
     // MARK: - UI Components
     let searchBarView = SearchBarView()
-    private var listAdapter: ListAdapter
+    let errorView = ErrorView()
+    var listAdapter: ListAdapter
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.text = "tintos"
+        label.text = "Cinemark"
         label.textColor = .black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -59,48 +45,54 @@ class MoviesView: UIView {
     
     // MARK: - Setup Method
     private func setupViews() {
-        self.backgroundColor = .white
+        self.addSubview(titleLabel)
         self.addSubview(searchBarView)
+        self.searchBarView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(collectionView)
+        self.addSubview(errorView)
+        self.errorView.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .white
         NSLayoutConstraint.activate([
-            self.searchBarView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
+            self.titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.searchBarView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10),
             self.searchBarView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.searchBarView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.searchBarView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor),
             self.collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.errorView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.errorView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.errorView.topAnchor.constraint(equalTo: self.collectionView.topAnchor),
+            self.errorView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+        self.errorView.isHidden = true
     }
     
     private func configureAdapters() {
         self.listAdapter.setCollectionView(self.collectionView)
     }
     
+    func showError(_ show: Bool, searchText: String) {
+        if show {
+            self.errorView.updateErrorMessage(searchText: searchText)
+            self.errorView.isHidden = false
+        } else {
+            self.errorView.isHidden = true
+        }
+    }
+    
     // MARK: - Setup Method
-    func reloadCollectionView(_ datasource: [commonDetails]) {
+    func reloadCollectionView(_ datasource: [commonDetails], searchText: String?) {
         self.listAdapter.datasource = datasource
         self.collectionView.reloadData()
+        self.showError(datasource.isEmpty, searchText: searchText ?? "")
     }
     
     // MARK: - Set Title
     func setTitle(_ title: String) {
-        titleLabel.text = title
+        self.titleLabel.text = title
     }
-}
-
-struct MoviesViewRepresentable: UIViewRepresentable {
-    func makeUIView(context: Context) -> MoviesView{
-        let movies = [commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
-        let listAdapter = MoviesSimpleListAdapter()
-        let view = MoviesView(listAdapter: listAdapter)
-        view.reloadCollectionView(movies)
-        return view
-    }
-    
-    func updateUIView(_ uiView: MoviesView, context: Context) { }
-}
-
-#Preview {
-    MoviesViewRepresentable()
 }

@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol MoviesSimpleListAdapterDelegate: AnyObject {
+    func didSelectMovie(_ movie: commonDetails)
+}
+
 class MoviesSimpleListAdapter: NSObject, ListAdapter {
     
     private weak var collectionView: UICollectionView?
     var datasource: [commonDetails] = []
+    weak var delegate: MoviesSimpleListAdapterDelegate?
 
     func setCollectionView(_ collectionView: UICollectionView) {
         self.collectionView = collectionView
@@ -51,7 +56,10 @@ extension MoviesSimpleListAdapter: UICollectionViewDataSource {
 }
 
 extension MoviesSimpleListAdapter: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie = self.datasource[indexPath.row]
+        delegate?.didSelectMovie(movie)
+    }
 }
 
 

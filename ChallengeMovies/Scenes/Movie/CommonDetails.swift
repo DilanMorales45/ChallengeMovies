@@ -22,7 +22,7 @@ struct commonDetails {
     }
     
     var info: String {
-        "\(String(describing: self.releaseDate)) • \(self.nameMovie)"
+        "\(self.nameMovie)"
     }
     
     init(nameMovie: String, rating: Double, urlImage: String, releaseDate: String) {
