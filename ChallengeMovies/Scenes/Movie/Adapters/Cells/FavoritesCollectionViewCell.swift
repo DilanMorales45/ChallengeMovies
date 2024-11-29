@@ -19,6 +19,15 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         return lbl
     }()
     
+    private lazy var lblReleaseDate: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.numberOfLines = 0
+        lbl.textColor = .darkGray
+        lbl.font = .systemFont(ofSize: 15, weight: .light)
+        return lbl
+    }()
+    
     private lazy var imgMovie: UIImageView = {
         let img = UIImageView()
         img.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +36,8 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         return img
     }()
     
-    private lazy var stkContent = VerticalStack(subViews: [self.imgMovie, self.lblInfo], spacing: 5)
+    private lazy var stkContent2 = VerticalStack(subViews: [self.lblInfo, self.lblReleaseDate], spacing: 1)
+    private lazy var stkContent = VerticalStack(subViews: [self.imgMovie,self.stkContent2], spacing: 1)
     
     private func setupCell() {
         
@@ -55,5 +65,6 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     
     func updateWith(_ movie: commonDetails) {
         self.lblInfo.text = movie.info
+        self.lblReleaseDate.text = movie.releaseDateShortFormat
     }
 }

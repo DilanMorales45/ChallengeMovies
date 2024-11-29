@@ -16,7 +16,7 @@ struct commonDetails {
     var releaseDateFullFormat: String {
         self.releaseDate?.toStringWithFormat("EEEE dd 'de' MMMM 'del' yyyy") ?? "Próximamente"
     }
-    
+
     var releaseDateShortFormat: String {
         self.releaseDate?.toStringWithFormat("dd MMMM yyyy") ?? "Próximamente"
     }

@@ -46,8 +46,18 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         return img
     }()
 
+    private lazy var stkStars: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 0
+        stackView.alignment = .leading
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+
     private lazy var stkReleaseDate = VerticalStack(subViews: [self.lblReleaseDateInfo, self.lblReleaseDate], spacing: 3)
-    private lazy var stkInfo = VerticalStack(subViews: [self.lblInfo, self.stkReleaseDate],
+    private lazy var stkInfo = VerticalStack(subViews: [self.lblInfo, self.stkReleaseDate, self.stkStars],
                                              spacing: 3,
                                              margins: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     private lazy var stkContent = HorizontalStack(subViews: [self.imgMovie, self.stkInfo], distribution: .fill, spacing: 0)
@@ -70,6 +80,8 @@ class MoviesCollectionViewCell: UICollectionViewCell {
             self.stkContent.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.stkContent.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
+        self.stkStars.widthAnchor.constraint(equalTo: self.stkInfo.widthAnchor, multiplier: 0.7).isActive = true
+
     }
     
     override init(frame: CGRect) {
@@ -84,6 +96,36 @@ class MoviesCollectionViewCell: UICollectionViewCell {
     func updateWith(_ movie: commonDetails) {
         self.lblInfo.text = movie.info
         self.lblReleaseDate.text = movie.releaseDateFullFormat
+        
+        self.updateStars(rating: movie.rating)
     }
+    
+    // Método para actualizar las estrellas
+       func updateStars(rating: Double) {
+           // Limpiar cualquier imagen previa
+           self.stkStars.arrangedSubviews.forEach { $0.removeFromSuperview() }
+           
+           // Calcular cuántas estrellas completas, medias y vacías deben mostrarse
+           let fullStars = Int(rating)
+           let hasExtraFullStar = (rating - Double(fullStars)) >= 0.5 ? 1 : 0
+           let emptyStars = 10 - (fullStars + hasExtraFullStar)
+           
+           // Crear un arreglo con las imágenes a agregar
+           let starImages = Array(repeating: UIImage(systemName: "star.fill"), count: fullStars + hasExtraFullStar) +
+                            Array(repeating: UIImage(systemName: "star"), count: emptyStars)
+           
+           // Tamaño de las estrellas (ajustado a un tamaño más pequeño)
+           let starSize: CGFloat = 15 // Ajusta este valor para cambiar el tamaño de las estrellas
+
+           // Agregar las imágenes al starStackView
+           starImages.forEach { image in
+               let imageView = UIImageView(image: image)
+               imageView.tintColor = .systemOrange // Color amarillo
+               imageView.translatesAutoresizingMaskIntoConstraints = false
+               imageView.widthAnchor.constraint(equalToConstant: starSize).isActive = true
+               imageView.heightAnchor.constraint(equalToConstant: starSize).isActive = true
+               self.stkStars.addArrangedSubview(imageView)
+           }
+       }
     
 }
