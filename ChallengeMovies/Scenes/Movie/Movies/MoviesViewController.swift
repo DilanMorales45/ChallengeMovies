@@ -39,7 +39,6 @@ class MoviesViewController: UIViewController {
     
     private func configureView() {
         self.view = self.moviesView
-        self.moviesView.setTitle("Cinemark")
         self.moviesView.searchBarView.delegate = self
         if let adapter = self.moviesView.listAdapter as? MoviesSimpleListAdapter {
             adapter.delegate = self

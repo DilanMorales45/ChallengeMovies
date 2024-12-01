@@ -15,7 +15,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         lbl.numberOfLines = 0
         lbl.textColor = .darkGray
         lbl.font = .systemFont(ofSize: 18, weight: .semibold)
-        lbl.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        lbl.heightAnchor.constraint(equalToConstant: 30).isActive = true
         return lbl
     }()
     
@@ -24,7 +24,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
         lbl.font = UIFont.italicSystemFont(ofSize: 15)
-        lbl.textColor = .darkGray
+        lbl.textColor = .systemGray
         return lbl
     }()
     

@@ -39,12 +39,11 @@ class FavoritesViewController: UIViewController {
     
     private func configureView() {
         self.view = self.favoritesView
-        self.favoritesView.setTitle("Cinemark")
         self.favoritesView.searchBarView.delegate = self
     }
     
     private func fetchMovies() {
-        let movies = [commonDetails.mock,commonDetails.mock, commonDetails.init(nameMovie: "ruta", rating: 0.0, urlImage: "", releaseDate: "12/03/2020"), commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
+        let movies = [commonDetails.mock,commonDetails.mock, commonDetails.init(nameMovie: "rutafffffffffffffffffffffffffffffffffffffffff", rating: 0.0, urlImage: "", releaseDate: "12/03/2020"), commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
         self.allMovies = movies
         self.filteredMovies = movies
         self.favoritesView.reloadCollectionView(movies, searchText: nil)
