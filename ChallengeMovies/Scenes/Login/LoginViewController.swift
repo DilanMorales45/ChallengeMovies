@@ -9,7 +9,6 @@ import UIKit
 
 // MARK: - Constants
 let LocalizeUserDefaultKey = "LocalizeUserDefaultKey"
-var LocalizeDefaultLanguage = "en"
 
 class LoginViewController: UIViewController {
     
@@ -69,14 +68,12 @@ class LoginViewController: UIViewController {
     }
 
     @objc private func changeLanguageSpanish() {
-        LocalizeDefaultLanguage = "es-419"
-        UserDefaults.standard.setValue(LocalizeDefaultLanguage, forKey: LocalizeUserDefaultKey)
+        LocalizationManager.currentLanguage = "es-419"
         refreshLanguage()
     }
 
     @objc private func changeLanguageEnglish() {
-        LocalizeDefaultLanguage = "en"
-        UserDefaults.standard.setValue(LocalizeDefaultLanguage, forKey: LocalizeUserDefaultKey)
+        LocalizationManager.currentLanguage = "en"
         refreshLanguage()
     }
     
@@ -89,11 +86,7 @@ class LoginViewController: UIViewController {
 // MARK: - String Extension for Localization
 extension String {
     func translate() -> String {
-        if let path = Bundle.main.path(forResource: LocalizeDefaultLanguage, ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            return NSLocalizedString(self, bundle: bundle, comment: "")
-        }
-        return ""
+        return LocalizationManager.translate(self)
     }
 }
 
