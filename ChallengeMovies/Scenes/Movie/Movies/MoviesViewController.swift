@@ -45,6 +45,10 @@ class MoviesViewController: UIViewController {
         }
     }
     
+    private func configurationActions() {
+
+    }
+    
     private func fetchMovies() {
         let movies = [commonDetails.mock, commonDetails.init(nameMovie: "ruta", rating: 2.0, urlImage: "", releaseDate: "12/03/2020"), commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
         self.allMovies = movies

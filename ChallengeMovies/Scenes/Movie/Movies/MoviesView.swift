@@ -16,12 +16,23 @@ class MoviesView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 19)
         label.text = "Cinemark"
         label.textColor = .black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private lazy var configurationButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "ellipsis")
+        config.baseForegroundColor = .gray
+        
+        let button = UIButton(type: .system)
+        button.configuration = config
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private lazy var collectionView: UICollectionView = {
@@ -46,6 +57,7 @@ class MoviesView: UIView {
     // MARK: - Setup Method
     private func setupViews() {
         self.addSubview(titleLabel)
+        self.addSubview(configurationButton)
         self.addSubview(searchBarView)
         self.searchBarView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(collectionView)
@@ -53,9 +65,16 @@ class MoviesView: UIView {
         self.errorView.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .white
         NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
-            self.titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.searchBarView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10),
+            self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            self.titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            self.titleLabel.widthAnchor.constraint(equalToConstant: 370),
+            self.titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            self.titleLabel.bottomAnchor.constraint(equalTo: searchBarView.topAnchor),
+            self.titleLabel.trailingAnchor.constraint(equalTo: self.configurationButton.leadingAnchor),
+            self.configurationButton.topAnchor.constraint(equalTo: self.titleLabel.topAnchor),
+            self.configurationButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            self.configurationButton.bottomAnchor.constraint(equalTo: searchBarView.topAnchor),
+            self.searchBarView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor),
             self.searchBarView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.searchBarView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.searchBarView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor),
