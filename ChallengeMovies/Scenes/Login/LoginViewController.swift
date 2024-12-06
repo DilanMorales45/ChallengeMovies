@@ -7,9 +7,6 @@
 
 import UIKit
 
-// MARK: - Constants
-let LocalizeUserDefaultKey = "LocalizeUserDefaultKey"
-
 class LoginViewController: UIViewController {
     
     // MARK: - Properties
@@ -61,19 +58,21 @@ class LoginViewController: UIViewController {
     // MARK: - Language Change Methods
     private func refreshLanguage() {
         loginView.emailLabel.attributedPlaceholder = NSAttributedString(
-            string: "LoginViewController.refreshLanguage.EmailMessage".translate(),
+            string: "LoginViewController.refreshLanguage.EmailMessage".localized,
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
         )
-        loginView.accessButton.setTitle("LoginViewController.refreshLanguage.AccessButton".translate(), for: .normal)
+        loginView.accessButton.setTitle("LoginViewController.refreshLanguage.AccessButton".localized, for: .normal)
+        
+        NotificationCenter.default.post(name: Notification.Name("languageDidChange"), object: nil)
     }
 
     @objc private func changeLanguageSpanish() {
-        LocalizationManager.currentLanguage = "es-419"
+        LocalizationManager.shared.set(language: .es)
         refreshLanguage()
     }
 
     @objc private func changeLanguageEnglish() {
-        LocalizationManager.currentLanguage = "en"
+        LocalizationManager.shared.set(language: .en)
         refreshLanguage()
     }
     
@@ -81,13 +80,6 @@ class LoginViewController: UIViewController {
         loginView.delegate?.loginView(self.loginView, didSignWith: self.loginView.emailLabel.text)
     }
     
-}
-
-// MARK: - String Extension for Localization
-extension String {
-    func translate() -> String {
-        return LocalizationManager.translate(self)
-    }
 }
 
 // MARK: - Build Extension for LoginViewController

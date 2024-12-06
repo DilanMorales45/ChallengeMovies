@@ -8,7 +8,9 @@
 import UIKit
 
 class TabBar: UITabBarController {
-
+    private var movieVCTitle: String = ""
+    private var favoriteVCTitle: String = ""
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -17,10 +19,16 @@ class TabBar: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        NotificationManager.removeObserver()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupTabs()
         self.configureTabBarAppearance()
+        self.manageNotifications()
+        self.setupTabs()
+        self.refreshTabBarLanguage()
     }
     
     private func configureTabBarAppearance() {
@@ -30,21 +38,33 @@ class TabBar: UITabBarController {
     }
     
     private func setupTabs() {
-//        Controllers que se vana utilizar 
         let movieVC = MoviesViewController.buildSimpleList()
         let favoriteVC = FavoritesViewController.buildGridList()
         
-        movieVC.tabBarItem = UITabBarItem(title: "Peliculas",
-                                            image: UIImage(systemName: "square.grid.2x2"),
-                                            selectedImage: UIImage(systemName: "square.grid.2x2.fill"))
+        movieVC.tabBarItem = UITabBarItem(title: movieVCTitle,
+                                          image: UIImage(systemName: "square.grid.2x2"),
+                                          selectedImage: UIImage(systemName: "square.grid.2x2.fill"))
         
-        favoriteVC.tabBarItem = UITabBarItem(title: "Favoritos",
-                                              image: UIImage(systemName: "star"),
-                                              selectedImage: UIImage(systemName: "star.fill"))
+        favoriteVC.tabBarItem = UITabBarItem(title: favoriteVCTitle,
+                                             image: UIImage(systemName: "star"),
+                                             selectedImage: UIImage(systemName: "star.fill"))
 
         setViewControllers([movieVC, favoriteVC], animated: true)
     }
     
+    private func manageNotifications() {
+        NotificationManager.addObserver(selector: #selector(languageDidChange))
+    }
+    
+    private func refreshTabBarLanguage() {
+        movieVCTitle = "TabBar.refreshTabBarLanguage.movieTitle".localized
+        favoriteVCTitle = "TabBar.refreshTabBarLanguage.favoriteTitle".localized
+        self.setupTabs()
+    }
+    
+    @objc func languageDidChange() {
+        self.refreshTabBarLanguage()
+    }
 }
 
 extension TabBar {

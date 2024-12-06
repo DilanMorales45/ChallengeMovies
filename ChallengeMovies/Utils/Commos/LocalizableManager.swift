@@ -8,24 +8,42 @@
 import Foundation
 
 class LocalizationManager {
-    static var currentLanguage: String {
-        get {
-            if let savedLanguage = UserDefaults.standard.string(forKey: LocalizeUserDefaultKey) {
-                           return savedLanguage
-                       }
-            return Locale.current.language.languageCode?.identifier ?? "en"
-//            return UserDefaults.standard.string(forKey: LocalizeUserDefaultKey) ?? "es-419"
+    static var shared = LocalizationManager()
+    
+    private let LocalizeUserDefaultKey = "LocalizeUserDefaultKey"
+    
+    var currentLanguage: String {
+        if let savedLanguage = UserDefaults.standard.string(forKey: LocalizeUserDefaultKey) {
+            return savedLanguage
         }
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: LocalizeUserDefaultKey)
-        }
+        
+        let systemLanguage = SupportedLenguages(rawValue: Locale.current.language.languageCode?.identifier ?? "")
+        return systemLanguage.rawValue
     }
     
-    static func translate(_ key: String) -> String {
-        if let path = Bundle.main.path(forResource: currentLanguage, ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            return NSLocalizedString(key, bundle: bundle, comment: "")
+    private init(){
+        
+    }
+
+    func set(language: SupportedLenguages){
+        UserDefaults.standard.setValue(language.rawValue, forKey: LocalizeUserDefaultKey)
+    }
+}
+
+
+extension LocalizationManager {
+    enum SupportedLenguages: String {
+        case en
+        case es
+        
+        init(rawValue: String) {
+            if rawValue == SupportedLenguages.en.rawValue {
+                self = .en
+            } else if rawValue == SupportedLenguages.es.rawValue {
+                self = .es
+            } else {
+                self = .en
+            }
         }
-        return key
     }
 }

@@ -8,3 +8,8 @@
 
 "LoginViewController.refreshLanguage.EmailMessage" = "Email";
 "LoginViewController.refreshLanguage.AccessButton" = "Log In";
+
+"SearchBarView.refreshSearchBarLanguage.SearchPlaceholder" = "Search";
+
+"TabBar.refreshTabBarLanguage.movieTitle" = "Movies";
+"TabBar.refreshTabBarLanguage.favoriteTitle" = "Favorites";

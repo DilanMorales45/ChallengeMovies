@@ -12,49 +12,44 @@ protocol SearchBarViewDelegate: AnyObject {
     func didUpdateSearchResults(searchText: String)
 }
 
-// Deleted: UISearchResultsUpdating
 class SearchBarView: UIView, UISearchBarDelegate {
     
     // MARK: - Properties
     weak var delegate: SearchBarViewDelegate?
     
-//    private let searchController = UISearchController(searchResultsController: nil)
     private let searchBar = UISearchBar()
     
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureSearchController()
+        self.refreshSearchBarLanguage()
+        self.configureSearchController()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configureSearchController()
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationManager.removeObserver()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        delegate?.didUpdateSearchResults(searchText: searchText)
+    }
+        
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        delegate?.didUpdateSearchResults(searchText: "")
+    }
+    
+    private func noticationLanguage() {
+        NotificationManager.addObserver(selector: #selector(languageDidChange))
     }
     
     // MARK: - SearchBar Configuration Methods
     private func configureSearchController() {
-//        backgroundColor = .cyan
-        
-//        searchController.searchResultsUpdater = self
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.hidesNavigationBarDuringPresentation = false
-//        searchController.searchBar.placeholder = "Buscar dispositivos"
-//        searchController.title = "Cinemark"
-//        
-//        addSubview(searchController.searchBar)
-//        searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        
-//        NSLayoutConstraint.activate([
-//            searchController.searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-//            searchController.searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-//            searchController.searchBar.topAnchor.constraint(equalTo: topAnchor),
-//            searchController.searchBar.bottomAnchor.constraint(equalTo: bottomAnchor)
-//        ])
-        
+
         searchBar.delegate = self
-        searchBar.placeholder = "Buscar dispositivos"
         searchBar.showsCancelButton = false
                 
         addSubview(searchBar)
@@ -69,19 +64,12 @@ class SearchBarView: UIView, UISearchBarDelegate {
         
     }
     
-    // MARK: - UISearchResultsUpdating
-    
-//    func updateSearchResults(for searchController: UISearchController) {
-//        
-//        delegate?.didUpdateSearchResults(searchText: searchController.searchBar.text ?? "")
-//    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        delegate?.didUpdateSearchResults(searchText: searchText)
+    private func refreshSearchBarLanguage() {
+        searchBar.placeholder = "SearchBarView.refreshSearchBarLanguage.SearchPlaceholder".localized
     }
-        
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        delegate?.didUpdateSearchResults(searchText: "")
+    
+    @objc func languageDidChange() {
+        self.refreshSearchBarLanguage()
     }
 }
 
