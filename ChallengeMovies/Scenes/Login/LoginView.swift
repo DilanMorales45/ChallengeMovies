@@ -22,6 +22,7 @@ class LoginView: UIView {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.text = "Cinemark"
+        label.textColor = UIColor(named: "text_white")
         label.font = UIFont(name: "Arial Rounded MT Bold", size: 36)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,6 +35,8 @@ class LoginView: UIView {
             string: "",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
         )
+        text.textColor = UIColor(named: "text_white_lightgray")
+        text.backgroundColor = UIColor(named: "text_white_lightgray_email_label")
         text.borderStyle = .roundedRect
         text.translatesAutoresizingMaskIntoConstraints = false
         return text
@@ -42,8 +45,8 @@ class LoginView: UIView {
     lazy var accessButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(named: "button_background_white")
+        button.setTitleColor(UIColor(named: "text_button"), for: .normal)
         button.layer.cornerRadius = 8
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -56,6 +59,10 @@ class LoginView: UIView {
         
         let button = UIButton(type: .system)
         button.configuration = config
+        button.backgroundColor = UIColor(named: "button_background_translate")
+        button.tintColor =  UIColor(named: "button_background_white_translate")
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -67,6 +74,10 @@ class LoginView: UIView {
         
         let button = UIButton(type: .system)
         button.configuration = config
+        button.backgroundColor = UIColor(named: "button_background_translate")
+        button.tintColor =  UIColor(named: "button_background_white_translate")
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

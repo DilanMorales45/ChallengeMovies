@@ -18,7 +18,7 @@ class MoviesView: UIView {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.text = "Cinemark"
-        label.textColor = .black
+        label.textColor = UIColor(named: "text_white_lightgray")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

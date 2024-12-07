@@ -18,7 +18,7 @@ class FavoritesView: UIView {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.text = "Cinemark"
-        label.textColor = .black
+        label.textColor = UIColor(named: "text_white_lightgray")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -51,7 +51,7 @@ class FavoritesView: UIView {
         self.addSubview(collectionView)
         self.addSubview(errorView)
         self.errorView.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor(named: "background_dark_white")
         NSLayoutConstraint.activate([
             self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
             self.titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),

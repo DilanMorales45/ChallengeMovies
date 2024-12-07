@@ -13,7 +13,7 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .black
+        lbl.textColor = UIColor(named: "text_white_lightgray_title_movie")
         lbl.font = .systemFont(ofSize: 19, weight: .semibold)
         return lbl
     }()
@@ -23,7 +23,7 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         lbl.text = "Fecha de lanzamiento:"
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .systemGray
+        lbl.textColor = UIColor(named: "text_white_lightgray_label_movie")
         lbl.font = UIFont.italicSystemFont(ofSize: 15)
         return lbl
     }()
@@ -32,7 +32,7 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .systemGray
+        lbl.textColor = UIColor(named: "text_white_lightgray_label_movie")
         lbl.font = UIFont.italicSystemFont(ofSize: 15)
         return lbl
     }()
@@ -65,11 +65,11 @@ class MoviesCollectionViewCell: UICollectionViewCell {
     private func setupCell() {
         
         self.backgroundColor = .clear
-        self.stkContent.backgroundColor = .white
-        self.layer.shadowColor = UIColor.black.cgColor
+        self.stkContent.backgroundColor =  UIColor(named: "cell_background_movies")
+        self.layer.shadowColor = UIColor.darkGray.cgColor
         self.layer.shadowOffset = .zero
         self.layer.shadowRadius = 5
-        self.layer.shadowOpacity = 0.3
+        self.layer.shadowOpacity = 0.5
         self.stkContent.layer.cornerRadius = 8
         self.stkContent.clipsToBounds = true
         self.addSubview(self.stkContent)
