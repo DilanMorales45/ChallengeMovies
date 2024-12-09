@@ -13,7 +13,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.textColor = .darkGray
+        lbl.textColor = UIColor(named: "text_white_lightgray_favorite")
         lbl.font = .systemFont(ofSize: 18, weight: .semibold)
 //        lbl.heightAnchor.constraint(equalToConstant: 30).isActive = true
         return lbl
@@ -24,7 +24,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
         lbl.font = UIFont.italicSystemFont(ofSize: 15)
-        lbl.textColor = .systemGray
+        lbl.textColor = UIColor(named: "text_white_lightgray_label_favorite")
         return lbl
     }()
     
@@ -42,7 +42,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     private func setupCell() {
         
         self.backgroundColor = .clear
-        self.stkContent.backgroundColor = .white
+        self.stkContent.backgroundColor = UIColor(named: "cell_background_favorite")
         self.imgMovie.layer.cornerRadius = 8
         self.addSubview(self.stkContent)
         

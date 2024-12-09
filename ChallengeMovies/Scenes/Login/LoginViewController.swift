@@ -42,6 +42,7 @@ class LoginViewController: UIViewController {
         self.view = self.loginView
         self.loginView.delegate = self
         self.navigationStyle.configure(self)
+        self.loginView.backgroundColor = UIColor(named: "background_dark_white")
     }
     
     // MARK: - Alert Message Method

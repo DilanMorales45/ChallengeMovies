@@ -13,6 +13,7 @@ class ErrorView: UIView {
         let imageError = UIImageView()
         imageError.image = UIImage(systemName: "exclamationmark.triangle")
         imageError.contentMode = .scaleAspectFit
+        imageError.tintColor = UIColor(named: "button_image_color")
         return imageError
     }()
     
@@ -23,7 +24,7 @@ class ErrorView: UIView {
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
         label.text = "La llave de la búsqueda tiene que ir acá"
         label.font = UIFont.italicSystemFont(ofSize: 17)
-        label.textColor = .gray
+        label.textColor = UIColor(named: "text_white_lightgray_label_error")
         label.numberOfLines = 0
         return label
     }()
@@ -35,7 +36,7 @@ class ErrorView: UIView {
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
         label.text = "No se encontraron resultados para la búsqueda de:"
         label.font = UIFont.italicSystemFont(ofSize: 17)
-        label.textColor = .gray
+        label.textColor = UIColor(named: "text_white_lightgray_label_error")
         label.numberOfLines = 0
         return label
     }()
@@ -51,7 +52,7 @@ class ErrorView: UIView {
     }
     
     private func setupView() {
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor(named: "background_dark_white")
         addSubview(errorIconImageView)
         
         let stackView = UIStackView(arrangedSubviews: [errorMessageLabel, keySearchLabel])

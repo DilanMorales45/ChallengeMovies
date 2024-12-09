@@ -39,6 +39,7 @@ class MoviesViewController: UIViewController {
     
     private func configureView() {
         self.view = self.moviesView
+        self.moviesView.backgroundColor = UIColor(named: "background_dark_white")
         self.moviesView.searchBarView.delegate = self
         if let adapter = self.moviesView.listAdapter as? MoviesSimpleListAdapter {
             adapter.delegate = self
