@@ -11,12 +11,14 @@ class MoviesViewController: UIViewController {
     
     private let moviesView: MoviesView
     private let errorView: ErrorView
+    private let service: MoviesWebServiceProtocol
     private let navigationStyle: NavigationBarStyle
     private var allMovies: [commonDetails] = []
     private var filteredMovies: [commonDetails] = []
     
-    init(moviesView: MoviesView, navigationStyle: NavigationBarStyle, errorView: ErrorView) {
+    init(moviesView: MoviesView, service: MoviesWebServiceProtocol, navigationStyle: NavigationBarStyle, errorView: ErrorView) {
         self.moviesView = moviesView
+        self.service = service
         self.navigationStyle = navigationStyle
         self.errorView = errorView
         super.init(nibName: nil, bundle: nil)
@@ -47,10 +49,12 @@ class MoviesViewController: UIViewController {
     }
     
     private func fetchMovies() {
-        let movies = [commonDetails.mock, commonDetails.init(nameMovie: "ruta", rating: 2.0, urlImage: "", releaseDate: "12/03/2020"), commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
-        self.allMovies = movies
-        self.filteredMovies = movies
-        self.moviesView.reloadCollectionView(movies, searchText: nil)
+        self.service.fetch { moviesDTO in
+            self.moviesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
+        }
+//        self.allMovies = movies
+//        self.filteredMovies = movies
+//        self.moviesView.reloadCollectionView(movies, searchText: nil)
     }
     
 }
@@ -61,8 +65,8 @@ extension MoviesViewController: SearchBarViewDelegate {
             filteredMovies = allMovies
         } else {
             filteredMovies = allMovies.filter { movie in
-                movie.nameMovie.lowercased().contains(searchText.lowercased()) ||
-                String(movie.rating).contains(searchText)
+                movie.title.lowercased().contains(searchText.lowercased()) ||
+                String(movie.voteAverage).contains(searchText)
             }
         }
         
@@ -83,10 +87,11 @@ extension MoviesViewController {
     
     class func buildSimpleList() -> MoviesViewController {
         let adapter = MoviesSimpleListAdapter()
+        let service = MoviesWebService()
         let navStyle = NavigationBarHide()
         let error = ErrorView()
         let view = MoviesView(listAdapter: adapter)
-        let controller = MoviesViewController(moviesView: view, navigationStyle: navStyle, errorView: error)
+        let controller = MoviesViewController(moviesView: view, service: service ,navigationStyle: navStyle, errorView: error)
         return controller
     }
     

@@ -9,6 +9,8 @@ import UIKit
 
 class FavoritesCollectionViewCell: UICollectionViewCell {
     
+    private var movie: commonDetails?
+    
     private lazy var lblInfo: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +66,24 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     }
     
     func updateWith(_ movie: commonDetails) {
+        self.movie = movie
         self.lblInfo.text = movie.info
         self.lblReleaseDate.text = movie.releaseDateShortFormat
+        self.imgMovie.loadImageIn(movie.posterPath) { image, urlString in
+            if urlString == self.movie?.posterPath {
+                self.imgMovie.image = image
+            }
+        }
+    }
+}
+
+extension FavoritesCollectionViewCell {
+    
+    class var identifier: String { "FavoritesCollectionViewCell" }
+    
+    class func buildIn(_ collectionView: UICollectionView, indexPath: IndexPath, movie: commonDetails) -> Self {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.identifier, for: indexPath) as? Self
+        cell?.updateWith(movie)
+        return cell ?? Self()
     }
 }

@@ -16,7 +16,7 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
         self.collectionView = collectionView
         self.collectionView?.delegate = self
         self.collectionView?.dataSource = self
-        self.collectionView?.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: "FavoritesCollectionViewCell")
+        self.collectionView?.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: FavoritesCollectionViewCell.identifier)
         self.collectionView?.collectionViewLayout = self.layout()
     }
     
@@ -46,10 +46,7 @@ extension FavoriteGridListAdapter: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let movie = self.datasource[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCollectionViewCell", for: indexPath) as? FavoritesCollectionViewCell
-        cell?.updateWith(movie)
-        return cell ?? UICollectionViewCell()
+        FavoritesCollectionViewCell.buildIn(collectionView, indexPath: indexPath, movie: self.datasource[indexPath.row])
     }
 }
 

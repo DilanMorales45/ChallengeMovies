@@ -11,12 +11,14 @@ class FavoritesViewController: UIViewController {
   
     private let favoritesView: FavoritesView
     private let errorView: ErrorView
+    private let service: MoviesWebServiceProtocol
     private let navigationStyle: NavigationBarStyle
     private var allMovies: [commonDetails] = []
     private var filteredMovies: [commonDetails] = []
     
-    init(favoritesView: FavoritesView, navigationStyle: NavigationBarStyle, errorView: ErrorView) {
+    init(favoritesView: FavoritesView, service: MoviesWebServiceProtocol, navigationStyle: NavigationBarStyle, errorView: ErrorView) {
         self.favoritesView = favoritesView
+        self.service = service
         self.navigationStyle = navigationStyle
         self.errorView = errorView
         super.init(nibName: nil, bundle: nil)
@@ -43,10 +45,12 @@ class FavoritesViewController: UIViewController {
     }
     
     private func fetchMovies() {
-        let movies = [commonDetails.mock,commonDetails.mock, commonDetails.init(nameMovie: "rutafffffffffffffffffffffffffffffffffffffffff", rating: 0.0, urlImage: "", releaseDate: "12/03/2020"), commonDetails.mock, commonDetails.mock, commonDetails.mock, commonDetails.mock]
-        self.allMovies = movies
-        self.filteredMovies = movies
-        self.favoritesView.reloadCollectionView(movies, searchText: nil)
+        self.service.fetch { moviesDTO in
+            self.favoritesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
+        }
+//        self.allMovies = movies
+//        self.filteredMovies = movies
+//        self.favoritesView.reloadCollectionView(movies, searchText: nil)
     }
 }
 
@@ -56,8 +60,8 @@ extension FavoritesViewController: SearchBarViewDelegate {
             filteredMovies = allMovies
         } else {
             filteredMovies = allMovies.filter { movie in
-                movie.nameMovie.lowercased().contains(searchText.lowercased()) ||
-                String(movie.rating).contains(searchText)
+                movie.title.lowercased().contains(searchText.lowercased()) ||
+                String(movie.voteAverage).contains(searchText)
             }
         }
         
@@ -68,10 +72,11 @@ extension FavoritesViewController: SearchBarViewDelegate {
 extension FavoritesViewController {
     class func buildGridList() -> FavoritesViewController {
         let adapter = FavoriteGridListAdapter()
+        let service = MoviesWebService()
         let navStyle =  NavigationBarHide()
         let error = ErrorView()
         let view = FavoritesView(listAdapter: adapter)
-        let controller = FavoritesViewController(favoritesView: view, navigationStyle: navStyle, errorView: error)
+        let controller = FavoritesViewController(favoritesView: view, service: service, navigationStyle: navStyle, errorView: error)
         return controller
     }
 }

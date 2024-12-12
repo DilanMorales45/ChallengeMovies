@@ -12,7 +12,7 @@ class LoginViewController: UIViewController {
     // MARK: - Properties
     private let loginView: LoginView
     private let navigationStyle: NavigationBarStyle
-    lazy var api = MoviesService()
+//    lazy var api = MoviesService()
     
     init(loginView: LoginView, navigationStyle: NavigationBarStyle){
         self.loginView = loginView
@@ -102,17 +102,17 @@ extension LoginViewController: LoginViewDelegate {
         
         print("Bienvenido")
         
-        api.performRequest(for: .popularMovies) { movies in
-            DispatchQueue.main.async {
-                if let movies = movies {
-                    for movie in movies {
-                        print("Película: \(movie.title ?? ""), Fecha de estreno: \(movie.releaseDate ?? ""), Promedio de votos: \(movie.voteAverage ?? 0.0)")
-                    }
-                } else {
-                    print("No se pudieron cargar las películas")
-                }
-            }
-        }
+//        api.performRequest(for: .popularMovies) { movies in
+//            DispatchQueue.main.async {
+//                if let movies = movies {
+//                    for movie in movies {
+//                        print("Película: \(movie.title ?? ""), Fecha de estreno: \(movie.releaseDate ?? ""), Promedio de votos: \(movie.voteAverage ?? 0.0)")
+//                    }
+//                } else {
+//                    print("No se pudieron cargar las películas")
+//                }
+//            }
+//        }
         
         let TabBar = TabBar.build()
         self.navigationController?.pushViewController(TabBar, animated: true)

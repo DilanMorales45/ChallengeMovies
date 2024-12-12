@@ -21,7 +21,7 @@ class MoviesSimpleListAdapter: NSObject, ListAdapter {
         self.collectionView = collectionView
         self.collectionView?.delegate = self
         self.collectionView?.dataSource = self
-        self.collectionView?.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: "MoviesCollectionViewCell")
+        self.collectionView?.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: MoviesCollectionViewCell.identifier)
         self.collectionView?.collectionViewLayout = self.layout()
     }
     
@@ -47,10 +47,7 @@ extension MoviesSimpleListAdapter: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let movie = self.datasource[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoviesCollectionViewCell", for: indexPath) as? MoviesCollectionViewCell
-        cell?.updateWith(movie)
-        return cell ?? UICollectionViewCell()
+        MoviesCollectionViewCell.buildIn(collectionView, indexPath: indexPath, movie: self.datasource[indexPath.row])
     }
     
 }

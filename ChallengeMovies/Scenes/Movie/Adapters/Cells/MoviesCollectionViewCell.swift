@@ -9,6 +9,8 @@ import UIKit
 
 class MoviesCollectionViewCell: UICollectionViewCell {
     
+    private var movie: commonDetails?
+    
     private lazy var lblInfo: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +45,8 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         img.backgroundColor = .systemIndigo
         img.widthAnchor.constraint(equalToConstant: 120).isActive = true
         img.heightAnchor.constraint(equalTo: img.widthAnchor, multiplier: 1.5).isActive = true
+        img.contentMode = .scaleAspectFill
+        img.clipsToBounds = true
         return img
     }()
 
@@ -94,38 +98,47 @@ class MoviesCollectionViewCell: UICollectionViewCell {
     }
     
     func updateWith(_ movie: commonDetails) {
+        self.movie = movie
         self.lblInfo.text = movie.info
         self.lblReleaseDate.text = movie.releaseDateFullFormat
-        
-        self.updateStars(rating: movie.rating)
+        self.imgMovie.loadImageIn(movie.posterPath) { image, urlString in
+            if urlString == self.movie?.posterPath {
+                self.imgMovie.image = image
+            }
+        }
+        self.updateStars(rating: movie.voteAverage)
     }
     
-    // Método para actualizar las estrellas
-       func updateStars(rating: Double) {
-           // Limpiar cualquier imagen previa
-           self.stkStars.arrangedSubviews.forEach { $0.removeFromSuperview() }
-           
-           // Calcular cuántas estrellas completas, medias y vacías deben mostrarse
-           let fullStars = Int(rating)
-           let hasExtraFullStar = (rating - Double(fullStars)) >= 0.5 ? 1 : 0
-           let emptyStars = 10 - (fullStars + hasExtraFullStar)
-           
-           // Crear un arreglo con las imágenes a agregar
-           let starImages = Array(repeating: UIImage(systemName: "star.fill"), count: fullStars + hasExtraFullStar) +
-                            Array(repeating: UIImage(systemName: "star"), count: emptyStars)
-           
-           // Tamaño de las estrellas (ajustado a un tamaño más pequeño)
-           let starSize: CGFloat = 15 // Ajusta este valor para cambiar el tamaño de las estrellas
+    func updateStars(rating: Double) {
+        self.stkStars.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        let fullStars = Int(rating)
+        let hasExtraFullStar = (rating - Double(fullStars)) >= 0.5 ? 1 : 0
+        let emptyStars = 10 - (fullStars + hasExtraFullStar)
+        
+        let starImages = Array(repeating: UIImage(systemName: "star.fill"), count: fullStars + hasExtraFullStar) +
+        Array(repeating: UIImage(systemName: "star"), count: emptyStars)
+        
+        let starSize: CGFloat = 15
+        
+        starImages.forEach { image in
+            let imageView = UIImageView(image: image)
+            imageView.tintColor = .systemOrange // Color amarillo
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.widthAnchor.constraint(equalToConstant: starSize).isActive = true
+            imageView.heightAnchor.constraint(equalToConstant: starSize).isActive = true
+            self.stkStars.addArrangedSubview(imageView)
+        }
+    }
+}
 
-           // Agregar las imágenes al starStackView
-           starImages.forEach { image in
-               let imageView = UIImageView(image: image)
-               imageView.tintColor = .systemOrange // Color amarillo
-               imageView.translatesAutoresizingMaskIntoConstraints = false
-               imageView.widthAnchor.constraint(equalToConstant: starSize).isActive = true
-               imageView.heightAnchor.constraint(equalToConstant: starSize).isActive = true
-               self.stkStars.addArrangedSubview(imageView)
-           }
-       }
+extension MoviesCollectionViewCell {
     
+    class var identifier: String { "MoviesCollectionViewCell" }
+    
+    class func buildIn(_ collectionView: UICollectionView, indexPath: IndexPath, movie: commonDetails) -> Self {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.identifier, for: indexPath) as? Self
+        cell?.updateWith(movie)
+        return cell ?? Self()
+    }
 }
