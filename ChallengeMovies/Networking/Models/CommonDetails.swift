@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct commonDetails {
+class commonDetails: NSObject {
     let title: String
     let voteAverage: Double
     let posterPath: String

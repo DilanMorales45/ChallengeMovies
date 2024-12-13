@@ -73,7 +73,7 @@ extension FavoritesViewController {
     class func buildGridList() -> FavoritesViewController {
         let adapter = FavoriteGridListAdapter()
         let service = MoviesWebService()
-        let navStyle =  NavigationBarHide()
+        let navStyle =  NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let view = FavoritesView(listAdapter: adapter)
         let controller = FavoritesViewController(favoritesView: view, service: service, navigationStyle: navStyle, errorView: error)

@@ -7,27 +7,30 @@
 
 import UIKit
 
+@objc protocol MoviesViewDelegate: AnyObject {
+    @objc optional func moviesViewBeginPullToRefrsh(_ view: MoviesView)
+    func moviesView(_ view: MoviesView, didSelector movies: commonDetails)
+}
+
 class MoviesView: UIView {
+    
+    weak var delegate: MoviesViewDelegate?
     
     // MARK: - UI Components
     let searchBarView = SearchBarView()
     let errorView = ErrorView()
     var listAdapter: ListAdapter
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.text = "Cinemark"
-        label.textColor = UIColor(named: "text_white_lightgray")
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(pullToRefresh(_ :)) , for: .valueChanged)
+        return refresh
     }()
     
     // MARK: - Initializer
@@ -45,7 +48,6 @@ class MoviesView: UIView {
     
     // MARK: - Setup Method
     private func setupViews() {
-        self.addSubview(titleLabel)
         self.addSubview(searchBarView)
         self.searchBarView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(collectionView)
@@ -53,9 +55,7 @@ class MoviesView: UIView {
         self.errorView.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .white
         NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
-            self.titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.searchBarView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10),
+            self.searchBarView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             self.searchBarView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.searchBarView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.searchBarView.bottomAnchor.constraint(equalTo: self.collectionView.topAnchor),
@@ -91,8 +91,16 @@ class MoviesView: UIView {
         self.showError(datasource.isEmpty, searchText: searchText ?? "")
     }
     
-    // MARK: - Set Title
-    func setTitle(_ title: String) {
-        self.titleLabel.text = title
+    func addPullToRefresh() {
+        self.collectionView.addSubview(self.refreshControl)
+    }
+    
+    func endRefreshingAnimation() {
+        self.refreshControl.endRefreshing()
+    }
+    
+    @objc func pullToRefresh(_ sender: UIRefreshControl){
+        self.delegate?.moviesViewBeginPullToRefrsh?(self)
+//        self.delegate?.moviesView(MoviesView, didSelector: commonDetails)
     }
 }

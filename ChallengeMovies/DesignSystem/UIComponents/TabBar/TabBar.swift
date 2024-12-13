@@ -10,8 +10,10 @@ import UIKit
 class TabBar: UITabBarController {
     private var movieVCTitle: String = ""
     private var favoriteVCTitle: String = ""
+    private let navigationBarStyle: NavigationBarStyle
     
-    init() {
+    init(navigationBarStyle: NavigationBarStyle) {
+        self.navigationBarStyle = navigationBarStyle
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -29,6 +31,11 @@ class TabBar: UITabBarController {
         self.manageNotifications()
         self.setupTabs()
         self.refreshTabBarLanguage()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationBarStyle.configure(self)
     }
     
     private func configureTabBarAppearance() {
@@ -69,7 +76,8 @@ class TabBar: UITabBarController {
 
 extension TabBar {
     class func build() -> TabBar {
-        let controller = TabBar()
+        let navBar = NavigationBarTitle(title: "Cinemark")
+        let controller = TabBar(navigationBarStyle: navBar)
         return controller
     }
 }

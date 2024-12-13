@@ -42,20 +42,35 @@ class MoviesViewController: UIViewController {
     private func configureView() {
         self.view = self.moviesView
         self.moviesView.backgroundColor = UIColor(named: "background_dark_white")
+        self.moviesView.delegate = self
         self.moviesView.searchBarView.delegate = self
         if let adapter = self.moviesView.listAdapter as? MoviesSimpleListAdapter {
             adapter.delegate = self
         }
+        self.moviesView.addPullToRefresh()
     }
     
     private func fetchMovies() {
         self.service.fetch { moviesDTO in
+            self.moviesView.endRefreshingAnimation()
             self.moviesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
         }
 //        self.allMovies = movies
 //        self.filteredMovies = movies
 //        self.moviesView.reloadCollectionView(movies, searchText: nil)
     }
+    
+}
+
+extension MoviesViewController: MoviesViewDelegate {
+    func moviesViewBeginPullToRefrsh(_ view: MoviesView) {
+        self.fetchMovies()
+    }
+    
+    func moviesView(_ view: MoviesView, didSelector movies: commonDetails) {
+        
+    }
+    
     
 }
 
@@ -88,7 +103,7 @@ extension MoviesViewController {
     class func buildSimpleList() -> MoviesViewController {
         let adapter = MoviesSimpleListAdapter()
         let service = MoviesWebService()
-        let navStyle = NavigationBarHide()
+        let navStyle = NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let view = MoviesView(listAdapter: adapter)
         let controller = MoviesViewController(moviesView: view, service: service ,navigationStyle: navStyle, errorView: error)

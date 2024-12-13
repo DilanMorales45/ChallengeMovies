@@ -33,4 +33,16 @@ struct NavigationBarSimpleShow: NavigationBarStyle {
     
 }
 
-                                                                          
+struct NavigationBarTitle: NavigationBarStyle {
+    private let title: String
+    init(title: String) {
+        self.title = title
+    }
+    func configure(_ viewController: UIViewController) {
+        viewController.title = self.title
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.navigationItem.hidesBackButton = false
+        viewController.navigationController?.navigationBar.tintColor = UIColor(named: "text_white")
+    }
+}
+
