@@ -92,10 +92,15 @@ extension MoviesViewController: SearchBarViewDelegate {
 extension MoviesViewController: MoviesSimpleListAdapterDelegate {
     func didSelectMovie(_ movie: commonDetails) {
         let detailsController = DetailsViewController.build()
-        // Aquí puedes pasar datos a `detailsController` si es necesario, como `movie` para configurar la vista.
-//        detailsController.detailsView.configure(with: movie)
         self.navigationController?.pushViewController(detailsController, animated: true)
     }
+    
+//    func didSelectMovie(_ movie: commonDetails) {
+//        let detailsController = DetailsViewController.build()
+//        // Aquí puedes pasar datos a `detailsController` si es necesario, como `movie` para configurar la vista.
+////        detailsController.detailsView.configure(with: movie)
+//        self.navigationController?.pushViewController(detailsController, animated: true)
+//    }
 }
 
 extension MoviesViewController {

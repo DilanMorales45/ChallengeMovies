@@ -38,11 +38,30 @@ struct Result: Decodable {
     }
 }
 
-//extension MovieDTO {
-//    static var mock: MovieDTO {
-//        MovieDTO(title: "Terminator", voteAverage: 7.45, posterPath: "", releaseDate: "10/02/2018")
-//    }
-//}
+extension MovieDTO {
+    static var mock: MovieDTO {
+        return MovieDTO(
+            results: [
+                Result(
+                    adult: false,
+                    backdropPath: "/path/to/backdrop.jpg",
+                    genreIDS: [28, 12, 878], // Ejemplo de géneros
+                    id: 1,
+                    originalTitle: "Terminator",
+                    overview: "Un hombre del futuro es enviado al pasado para eliminar a una mujer que dará a luz al líder de la resistencia.",
+                    popularity: 78.5,
+                    posterPath: "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
+                    releaseDate: "1984-10-26",
+                    title: "Terminator",
+                    video: false,
+                    voteAverage: 7.45,
+                    voteCount: 10234
+                )
+            ]
+        )
+    }
+}
+
 
 extension Array where Element == MovieDTO {
     var toMovies: [commonDetails] {

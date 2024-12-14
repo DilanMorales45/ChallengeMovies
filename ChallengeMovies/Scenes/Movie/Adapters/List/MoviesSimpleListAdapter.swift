@@ -13,6 +13,8 @@ protocol MoviesSimpleListAdapterDelegate: AnyObject {
 
 class MoviesSimpleListAdapter: NSObject, ListAdapter {
     
+    var didSelectItem: DidSelectItem?
+    
     private weak var collectionView: UICollectionView?
     var datasource: [commonDetails] = []
     weak var delegate: MoviesSimpleListAdapterDelegate?
@@ -55,7 +57,7 @@ extension MoviesSimpleListAdapter: UICollectionViewDataSource {
 extension MoviesSimpleListAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = self.datasource[indexPath.row]
-        delegate?.didSelectMovie(movie)
+        self.didSelectItem?(movie)
     }
 }
 

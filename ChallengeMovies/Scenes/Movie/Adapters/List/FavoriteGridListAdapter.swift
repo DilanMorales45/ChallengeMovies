@@ -8,6 +8,7 @@
 import UIKit
 
 class FavoriteGridListAdapter: NSObject, ListAdapter {
+    var didSelectItem: DidSelectItem?
     
     private weak var collectionView: UICollectionView?
     var datasource: [commonDetails] = []
@@ -51,5 +52,8 @@ extension FavoriteGridListAdapter: UICollectionViewDataSource {
 }
 
 extension FavoriteGridListAdapter: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie = self.datasource[indexPath.row]
+        self.didSelectItem?(movie)
+    }
 }

@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol FavoritesViewDelegate: AnyObject {
+    func favoritesView(_ view: FavoritesView, didSelector movies: commonDetails)
+}
+
 class FavoritesView: UIView {
+    
+    weak var delegate: FavoritesViewDelegate?
     
     // MARK: - UI Components
     let searchBarView = SearchBarView()

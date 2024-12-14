@@ -73,6 +73,9 @@ class MoviesView: UIView {
     
     private func configureAdapters() {
         self.listAdapter.setCollectionView(self.collectionView)
+        self.listAdapter.didSelectItem = { movie in
+            self.delegate?.moviesView(self, didSelector: movie)
+        }
     }
     
     func showError(_ show: Bool, searchText: String) {

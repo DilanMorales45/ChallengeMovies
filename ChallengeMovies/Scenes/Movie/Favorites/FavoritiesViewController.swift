@@ -15,12 +15,14 @@ class FavoritesViewController: UIViewController {
     private let navigationStyle: NavigationBarStyle
     private var allMovies: [commonDetails] = []
     private var filteredMovies: [commonDetails] = []
+    private let localStorage: FavoritesLocalStorageProtocol
     
-    init(favoritesView: FavoritesView, service: MoviesWebServiceProtocol, navigationStyle: NavigationBarStyle, errorView: ErrorView) {
+    init(favoritesView: FavoritesView, service: MoviesWebServiceProtocol, navigationStyle: NavigationBarStyle, errorView: ErrorView, localStorage: FavoritesLocalStorageProtocol) {
         self.favoritesView = favoritesView
         self.service = service
         self.navigationStyle = navigationStyle
         self.errorView = errorView
+        self.localStorage = localStorage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,19 +43,26 @@ class FavoritesViewController: UIViewController {
     
     private func configureView() {
         self.view = self.favoritesView
+        self.favoritesView.delegate = self
         self.favoritesView.searchBarView.delegate = self
     }
     
     private func fetchMovies() {
-        self.service.fetch { moviesDTO in
-            self.favoritesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
-        }
-//        self.allMovies = movies
-//        self.filteredMovies = movies
-//        self.favoritesView.reloadCollectionView(movies, searchText: nil)
+        //        self.service.fetch { moviesDTO in
+        //            self.favoritesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
+        //        }
+        let result = self.localStorage.fetch()
+        self.favoritesView.reloadCollectionView(result.toMovies, searchText: nil)
+        //        self.allMovies = movies
+        //        self.filteredMovies = movies
+        //        self.favoritesView.reloadCollectionView(movies, searchText: nil)
     }
 }
-
+extension FavoritesViewController: FavoritesViewDelegate {
+    func favoritesView(_ view: FavoritesView, didSelector movies: commonDetails) {
+        
+    }
+}
 extension FavoritesViewController: SearchBarViewDelegate {
     func didUpdateSearchResults(searchText: String) {
         if searchText.isEmpty {
@@ -76,7 +85,8 @@ extension FavoritesViewController {
         let navStyle =  NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let view = FavoritesView(listAdapter: adapter)
-        let controller = FavoritesViewController(favoritesView: view, service: service, navigationStyle: navStyle, errorView: error)
+        let local = FavoritesLocalStorageMock()
+        let controller = FavoritesViewController(favoritesView: view, service: service, navigationStyle: navStyle, errorView: error, localStorage: local)
         return controller
     }
 }
