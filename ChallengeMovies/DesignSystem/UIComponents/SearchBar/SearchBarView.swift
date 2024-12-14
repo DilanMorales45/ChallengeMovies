@@ -7,17 +7,10 @@
 
 import UIKit
 
-// MARK: - Component for SearchBar
-protocol SearchBarViewDelegate: AnyObject {
-    func didUpdateSearchResults(searchText: String)
-}
-
 class SearchBarView: UIView, UISearchBarDelegate {
     
     // MARK: - Properties
-    weak var delegate: SearchBarViewDelegate?
-    
-    private let searchBar = UISearchBar()
+    let searchBar = UISearchBar()
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -34,14 +27,6 @@ class SearchBarView: UIView, UISearchBarDelegate {
         NotificationManager.removeObserver()
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        delegate?.didUpdateSearchResults(searchText: searchText)
-    }
-        
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        delegate?.didUpdateSearchResults(searchText: "")
-    }
-    
     private func noticationLanguage() {
         NotificationManager.addObserver(selector: #selector(languageDidChange))
     }
@@ -49,7 +34,6 @@ class SearchBarView: UIView, UISearchBarDelegate {
     // MARK: - SearchBar Configuration Methods
     private func configureSearchController() {
 
-        searchBar.delegate = self
         searchBar.showsCancelButton = false
                 
         addSubview(searchBar)

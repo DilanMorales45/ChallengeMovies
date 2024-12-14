@@ -44,7 +44,6 @@ class FavoritesViewController: UIViewController {
     private func configureView() {
         self.view = self.favoritesView
         self.favoritesView.delegate = self
-        self.favoritesView.searchBarView.delegate = self
     }
     
     private func fetchMovies() {
@@ -63,20 +62,21 @@ extension FavoritesViewController: FavoritesViewDelegate {
         
     }
 }
-extension FavoritesViewController: SearchBarViewDelegate {
-    func didUpdateSearchResults(searchText: String) {
-        if searchText.isEmpty {
-            filteredMovies = allMovies
-        } else {
-            filteredMovies = allMovies.filter { movie in
-                movie.title.lowercased().contains(searchText.lowercased()) ||
-                String(movie.voteAverage).contains(searchText)
-            }
-        }
-        
-        self.favoritesView.reloadCollectionView(filteredMovies, searchText: searchText)
-    }
-}
+
+//extension FavoritesViewController: SearchBarViewDelegate {
+//    func didUpdateSearchResults(searchText: String) {
+//        if searchText.isEmpty {
+//            filteredMovies = allMovies
+//        } else {
+//            filteredMovies = allMovies.filter { movie in
+//                movie.title.lowercased().contains(searchText.lowercased()) ||
+//                String(movie.voteAverage).contains(searchText)
+//            }
+//        }
+//        
+//        self.favoritesView.reloadCollectionView(filteredMovies, searchText: searchText)
+//    }
+//}
 
 extension FavoritesViewController {
     class func buildGridList() -> FavoritesViewController {

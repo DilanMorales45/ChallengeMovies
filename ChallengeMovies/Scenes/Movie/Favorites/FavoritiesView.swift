@@ -66,6 +66,7 @@ class FavoritesView: UIView {
     
     private func configureAdapters() {
         self.listAdapter.setCollectionView(self.collectionView)
+//        configuras el delegate
     }
     
     func showError(_ show: Bool, searchText: String) {

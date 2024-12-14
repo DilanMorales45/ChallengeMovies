@@ -20,6 +20,7 @@ class MoviesView: UIView {
     let searchBarView = SearchBarView()
     let errorView = ErrorView()
     var listAdapter: ListAdapter
+    private var moviesSearchAdapter: SearchBarAdapter
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -34,8 +35,9 @@ class MoviesView: UIView {
     }()
     
     // MARK: - Initializer
-    init(listAdapter: ListAdapter) {
+    init(listAdapter: ListAdapter, moviesSearchAdapter: SearchBarAdapter) {
         self.listAdapter = listAdapter
+        self.moviesSearchAdapter = moviesSearchAdapter
         super.init(frame: .zero)
         self.setupViews()
         self.configureAdapters()
@@ -76,6 +78,21 @@ class MoviesView: UIView {
         self.listAdapter.didSelectItem = { movie in
             self.delegate?.moviesView(self, didSelector: movie)
         }
+        
+        self.moviesSearchAdapter.setSearchBar(self.searchBarView.searchBar)
+        self.moviesSearchAdapter.didFilterItem = { movies in
+            self.reloadCollectionViewWith(movies)
+        }
+    }
+    
+    func reloadData(_ datasource: [commonDetails]) {
+        self.moviesSearchAdapter.datasource = datasource
+        self.reloadCollectionViewWith(datasource)
+    }
+    
+    func reloadCollectionViewWith(_ datasource: [commonDetails]) {
+        self.listAdapter.datasource = datasource
+        self.collectionView.reloadData()
     }
     
     func showError(_ show: Bool, searchText: String) {
@@ -87,13 +104,13 @@ class MoviesView: UIView {
         }
     }
     
-    // MARK: - Setup Method
-    func reloadCollectionView(_ datasource: [commonDetails], searchText: String?) {
-        self.listAdapter.datasource = datasource
-        self.collectionView.reloadData()
-        self.showError(datasource.isEmpty, searchText: searchText ?? "")
-    }
-    
+//    // MARK: - Setup Method
+//    func reloadCollectionView(_ datasource: [commonDetails], searchText: String?) {
+//        self.listAdapter.datasource = datasource
+//        self.collectionView.reloadData()
+//        self.showError(datasource.isEmpty, searchText: searchText ?? "")
+//    }
+//    
     func addPullToRefresh() {
         self.collectionView.addSubview(self.refreshControl)
     }

@@ -43,7 +43,6 @@ class MoviesViewController: UIViewController {
         self.view = self.moviesView
         self.moviesView.backgroundColor = UIColor(named: "background_dark_white")
         self.moviesView.delegate = self
-        self.moviesView.searchBarView.delegate = self
         if let adapter = self.moviesView.listAdapter as? MoviesSimpleListAdapter {
             adapter.delegate = self
         }
@@ -53,7 +52,7 @@ class MoviesViewController: UIViewController {
     private func fetchMovies() {
         self.service.fetch { moviesDTO in
             self.moviesView.endRefreshingAnimation()
-            self.moviesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
+            self.moviesView.reloadData(moviesDTO.toMovies)
         }
 //        self.allMovies = movies
 //        self.filteredMovies = movies
@@ -68,32 +67,34 @@ extension MoviesViewController: MoviesViewDelegate {
     }
     
     func moviesView(_ view: MoviesView, didSelector movies: commonDetails) {
-        
+        print(movies.title)
     }
     
     
 }
 
-extension MoviesViewController: SearchBarViewDelegate {
-    func didUpdateSearchResults(searchText: String) {
-        if searchText.isEmpty {
-            filteredMovies = allMovies
-        } else {
-            filteredMovies = allMovies.filter { movie in
-                movie.title.lowercased().contains(searchText.lowercased()) ||
-                String(movie.voteAverage).contains(searchText)
-            }
-        }
-        
-        self.moviesView.reloadCollectionView(filteredMovies, searchText: searchText)
-    }
-}
+//extension MoviesViewController: SearchBarViewDelegate {
+//    func didUpdateSearchResults(searchText: String) {
+//        if searchText.isEmpty {
+//            filteredMovies = allMovies
+//        } else {
+//            filteredMovies = allMovies.filter { movie in
+//                movie.title.lowercased().contains(searchText.lowercased()) ||
+//                String(movie.voteAverage).contains(searchText)
+//            }
+//        }
+//        
+//        self.moviesView.reloadCollectionView(filteredMovies, searchText: searchText)
+//    }
+//}
 
 extension MoviesViewController: MoviesSimpleListAdapterDelegate {
+    
     func didSelectMovie(_ movie: commonDetails) {
-        let detailsController = DetailsViewController.build()
-        self.navigationController?.pushViewController(detailsController, animated: true)
+        print(movie.title)
     }
+    
+    
     
 //    func didSelectMovie(_ movie: commonDetails) {
 //        let detailsController = DetailsViewController.build()
@@ -110,7 +111,8 @@ extension MoviesViewController {
         let service = MoviesWebService()
         let navStyle = NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
-        let view = MoviesView(listAdapter: adapter)
+        let searchBarAdapter = SearchBarTitleAdapter()
+        let view = MoviesView(listAdapter: adapter, moviesSearchAdapter: searchBarAdapter)
         let controller = MoviesViewController(moviesView: view, service: service ,navigationStyle: navStyle, errorView: error)
         return controller
     }
