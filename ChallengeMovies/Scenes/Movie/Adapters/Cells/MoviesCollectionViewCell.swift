@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MoviesCollectionViewCell: UICollectionViewCell {
+class MoviesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCell {
     
     private var movie: commonDetails?
     
@@ -97,7 +97,8 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateWith(_ movie: commonDetails) {
+    func updateWith(_ data: Any) {
+        guard let movie = data as? commonDetails else { return }
         self.movie = movie
         self.lblInfo.text = movie.info
         self.lblReleaseDate.text = movie.releaseDateFullFormat
@@ -136,9 +137,18 @@ extension MoviesCollectionViewCell {
     
     class var identifier: String { "MoviesCollectionViewCell" }
     
-    class func buildIn(_ collectionView: UICollectionView, indexPath: IndexPath, movie: commonDetails) -> Self {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.identifier, for: indexPath) as? Self
-        cell?.updateWith(movie)
-        return cell ?? Self()
+    class var layoutSection: NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(140))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(140))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
+            
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        
+        return section
     }
+
 }

@@ -25,6 +25,7 @@ class MoviesView: UIView {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.keyboardDismissMode = .onDrag
         return collectionView
     }()
     
@@ -80,8 +81,8 @@ class MoviesView: UIView {
         }
         
         self.moviesSearchAdapter.setSearchBar(self.searchBarView.searchBar)
-        self.moviesSearchAdapter.didFilterItem = { movies in
-            self.reloadCollectionViewWith(movies)
+        self.moviesSearchAdapter.didFilterItem = { result in
+            self.reloadCollectionViewWith(result)
         }
     }
     
@@ -90,7 +91,7 @@ class MoviesView: UIView {
         self.reloadCollectionViewWith(datasource)
     }
     
-    func reloadCollectionViewWith(_ datasource: [commonDetails]) {
+    func reloadCollectionViewWith(_ datasource: [Any]) {
         self.listAdapter.datasource = datasource
         self.collectionView.reloadData()
     }
@@ -120,6 +121,7 @@ class MoviesView: UIView {
     }
     
     @objc func pullToRefresh(_ sender: UIRefreshControl){
+        self.searchBarView.searchBar.text = ""
         self.delegate?.moviesViewBeginPullToRefrsh?(self)
 //        self.delegate?.moviesView(MoviesView, didSelector: commonDetails)
     }

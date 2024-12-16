@@ -19,16 +19,19 @@ class FavoritesView: UIView {
     let searchBarView = SearchBarView()
     let errorView = ErrorView()
     private var listAdapter: ListAdapter
+    private var favoritesSearchAdapter: SearchBarAdapter
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.keyboardDismissMode = .onDrag
         return collectionView
     }()
     
     // MARK: - Initializer
-    init(listAdapter: ListAdapter) {
+    init(listAdapter: ListAdapter, favoritesSearchAdapter: SearchBarAdapter) {
         self.listAdapter = listAdapter
+        self.favoritesSearchAdapter = favoritesSearchAdapter
         super.init(frame: .zero)
         self.setupViews()
         self.configureAdapters()
@@ -66,7 +69,20 @@ class FavoritesView: UIView {
     
     private func configureAdapters() {
         self.listAdapter.setCollectionView(self.collectionView)
-//        configuras el delegate
+        self.favoritesSearchAdapter.setSearchBar(self.searchBarView.searchBar)
+        self.favoritesSearchAdapter.didFilterItem = { result in
+            self.reloadCollectionViewWith(result)
+        }
+    }
+    
+    func reloadData(_ datasource: [commonDetails]) {
+        self.favoritesSearchAdapter.datasource = datasource
+        self.reloadCollectionViewWith(datasource)
+    }
+    
+    func reloadCollectionViewWith(_ datasource: [Any]) {
+        self.listAdapter.datasource = datasource
+        self.collectionView.reloadData()
     }
     
     func showError(_ show: Bool, searchText: String) {
@@ -79,10 +95,10 @@ class FavoritesView: UIView {
     }
     
     // MARK: - Setup Method
-    func reloadCollectionView(_ datasource: [commonDetails], searchText: String?) {
-        self.listAdapter.datasource = datasource
-        self.collectionView.reloadData()
-        self.showError(datasource.isEmpty, searchText: searchText ?? "")
-    }
+//    func reloadCollectionView(_ datasource: [commonDetails], searchText: String?) {
+//        self.listAdapter.datasource = datasource
+//        self.collectionView.reloadData()
+//        self.showError(datasource.isEmpty, searchText: searchText ?? "")
+//    }
     
 }

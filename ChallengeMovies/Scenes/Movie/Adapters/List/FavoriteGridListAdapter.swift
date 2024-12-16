@@ -11,33 +11,23 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
     var didSelectItem: DidSelectItem?
     
     private weak var collectionView: UICollectionView?
-    var datasource: [commonDetails] = []
+    var datasource: [Any] = []
     
     func setCollectionView(_ collectionView: UICollectionView) {
         self.collectionView = collectionView
         self.collectionView?.delegate = self
         self.collectionView?.dataSource = self
         self.collectionView?.register(FavoritesCollectionViewCell.self, forCellWithReuseIdentifier: FavoritesCollectionViewCell.identifier)
-        self.collectionView?.collectionViewLayout = self.layout()
+        self.collectionView?.register(ErrorCollectionViewCell.self, forCellWithReuseIdentifier: ErrorCollectionViewCell.identifier)
+//        self.collectionView?.collectionViewLayout = self.layout()
+        self.setLayout()
     }
     
-    private func layout() -> UICollectionViewCompositionalLayout {
-        let numberOfColumns: Int = 2
-        let fractionalWidth: CGFloat = 1 / CGFloat(numberOfColumns)
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fractionalWidth), heightDimension: .estimated(80))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: numberOfColumns)
-        group.interItemSpacing = .fixed(8)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 12
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
+    private func setLayout() {
+        let layout = UICollectionViewCompositionalLayout { section, layoutEnv in
+            (self.datasource is [commonDetails]) ? FavoritesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
+        }
+        self.collectionView?.collectionViewLayout = layout
     }
 }
 
@@ -47,13 +37,52 @@ extension FavoriteGridListAdapter: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        FavoritesCollectionViewCell.buildIn(collectionView, indexPath: indexPath, movie: self.datasource[indexPath.row])
+        let item = self.datasource[indexPath.row]
+        let factory = Factory(item: item)
+        return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
     }
 }
 
 extension FavoriteGridListAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie = self.datasource[indexPath.row]
+        guard let movie = self.datasource[indexPath.row] as? commonDetails else { return }
         self.didSelectItem?(movie)
+    }
+}
+
+extension FavoriteGridListAdapter {
+    
+    fileprivate struct Factory {
+        
+        private let typeCell: Cell
+        
+        init(item: Any) {
+            self.typeCell = Cell(item: item)
+        }
+        
+        var cell: GenericCollectionViewCell.Type {
+            switch self.typeCell {
+            case .movie: return FavoritesCollectionViewCell.self
+            case .error: return ErrorCollectionViewCell.self
+            }
+        }
+    }
+}
+
+extension FavoriteGridListAdapter.Factory {
+    fileprivate enum Cell {
+        case movie
+        case error
+        
+        init(item: Any) {
+            switch item {
+            case is commonDetails:
+                self = .movie
+            case is String:
+                self = .error
+            default:
+                self = .error
+            }
+        }
     }
 }

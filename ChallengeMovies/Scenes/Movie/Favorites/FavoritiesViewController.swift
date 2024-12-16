@@ -12,15 +12,13 @@ class FavoritesViewController: UIViewController {
     private let favoritesView: FavoritesView
     private let errorView: ErrorView
     private let service: MoviesWebServiceProtocol
-    private let navigationStyle: NavigationBarStyle
-    private var allMovies: [commonDetails] = []
-    private var filteredMovies: [commonDetails] = []
+//    private let navigationStyle: NavigationBarStyle
     private let localStorage: FavoritesLocalStorageProtocol
     
-    init(favoritesView: FavoritesView, service: MoviesWebServiceProtocol, navigationStyle: NavigationBarStyle, errorView: ErrorView, localStorage: FavoritesLocalStorageProtocol) {
+    init(favoritesView: FavoritesView, service: MoviesWebServiceProtocol,  errorView: ErrorView, localStorage: FavoritesLocalStorageProtocol) {
         self.favoritesView = favoritesView
         self.service = service
-        self.navigationStyle = navigationStyle
+//        self.navigationStyle = navigationStyle
         self.errorView = errorView
         self.localStorage = localStorage
         super.init(nibName: nil, bundle: nil)
@@ -37,7 +35,7 @@ class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationStyle.configure(self)
+//        self.navigationStyle.configure(self)
         self.fetchMovies()
     }
     
@@ -51,7 +49,7 @@ class FavoritesViewController: UIViewController {
         //            self.favoritesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
         //        }
         let result = self.localStorage.fetch()
-        self.favoritesView.reloadCollectionView(result.toMovies, searchText: nil)
+        self.favoritesView.reloadData(result.toMovies)
         //        self.allMovies = movies
         //        self.filteredMovies = movies
         //        self.favoritesView.reloadCollectionView(movies, searchText: nil)
@@ -82,11 +80,12 @@ extension FavoritesViewController {
     class func buildGridList() -> FavoritesViewController {
         let adapter = FavoriteGridListAdapter()
         let service = MoviesWebService()
-        let navStyle =  NavigationBarTitle(title: "Cinemark")
+//        let navStyle =  NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
-        let view = FavoritesView(listAdapter: adapter)
+        let searchBarAdapter = SearchBarRealaseDate()
+        let view = FavoritesView(listAdapter: adapter, favoritesSearchAdapter: searchBarAdapter)
         let local = FavoritesLocalStorageMock()
-        let controller = FavoritesViewController(favoritesView: view, service: service, navigationStyle: navStyle, errorView: error, localStorage: local)
+        let controller = FavoritesViewController(favoritesView: view, service: service, errorView: error, localStorage: local)
         return controller
     }
 }

@@ -23,7 +23,8 @@ extension SearchBarTitleAdapter: UISearchBarDelegate {
         if searchText.isEmpty {
             self.didFilterItem?(self.datasource)
         } else {
-            let result = self.datasource.filter({ $0.info.localizedCaseInsensitiveContains(searchText) })
+            var result: [Any] = self.datasource.filter({ $0.info.localizedCaseInsensitiveContains(searchText) })
+            result = !result.isEmpty ? result : ["No se encontraron resultados para tu busqueda:\n\n\(searchText)"]
             self.didFilterItem?(result)
         }
     }

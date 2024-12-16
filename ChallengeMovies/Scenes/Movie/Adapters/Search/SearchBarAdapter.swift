@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SearchBarAdapter: AnyObject {
-    typealias DidFilterItem = (_ movie: [commonDetails]) -> Void
+    typealias DidFilterItem = (_ result: [Any]) -> Void
     var datasource: [commonDetails] { get set }
     var didFilterItem: DidFilterItem? { get set }
     func setSearchBar(_ searchBar: UISearchBar)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoritesCollectionViewCell: UICollectionViewCell {
+class FavoritesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCell {
     
     private var movie: commonDetails?
     
@@ -65,7 +65,8 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateWith(_ movie: commonDetails) {
+    func updateWith(_ data: Any) {
+        guard let movie = data as? commonDetails else { return }
         self.movie = movie
         self.lblInfo.text = movie.info
         self.lblReleaseDate.text = movie.releaseDateShortFormat
@@ -81,9 +82,21 @@ extension FavoritesCollectionViewCell {
     
     class var identifier: String { "FavoritesCollectionViewCell" }
     
-    class func buildIn(_ collectionView: UICollectionView, indexPath: IndexPath, movie: commonDetails) -> Self {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.identifier, for: indexPath) as? Self
-        cell?.updateWith(movie)
-        return cell ?? Self()
+    class var layoutSection: NSCollectionLayoutSection {
+        let numberOfColumns: Int = 2
+        let fractionalWidth: CGFloat = 1 / CGFloat(numberOfColumns)
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fractionalWidth), heightDimension: .estimated(80))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: numberOfColumns)
+        group.interItemSpacing = .fixed(8)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        
+        return section
     }
 }

@@ -12,14 +12,12 @@ class MoviesViewController: UIViewController {
     private let moviesView: MoviesView
     private let errorView: ErrorView
     private let service: MoviesWebServiceProtocol
-    private let navigationStyle: NavigationBarStyle
-    private var allMovies: [commonDetails] = []
-    private var filteredMovies: [commonDetails] = []
+//    private let navigationStyle: NavigationBarStyle
     
-    init(moviesView: MoviesView, service: MoviesWebServiceProtocol, navigationStyle: NavigationBarStyle, errorView: ErrorView) {
+    init(moviesView: MoviesView, service: MoviesWebServiceProtocol,  errorView: ErrorView) {
         self.moviesView = moviesView
         self.service = service
-        self.navigationStyle = navigationStyle
+//        self.navigationStyle = navigationStyle
         self.errorView = errorView
         super.init(nibName: nil, bundle: nil)
     }
@@ -35,7 +33,7 @@ class MoviesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationStyle.configure(self)
+//        self.navigationStyle.configure(self)
         self.fetchMovies()
     }
     
@@ -67,6 +65,8 @@ extension MoviesViewController: MoviesViewDelegate {
     }
     
     func moviesView(_ view: MoviesView, didSelector movies: commonDetails) {
+        let controller = DetailsViewControllerNew.buildWith(movies)
+        self.navigationController?.pushViewController(controller, animated: true)
         print(movies.title)
     }
     
@@ -87,7 +87,7 @@ extension MoviesViewController: MoviesViewDelegate {
 //        self.moviesView.reloadCollectionView(filteredMovies, searchText: searchText)
 //    }
 //}
-
+//
 extension MoviesViewController: MoviesSimpleListAdapterDelegate {
     
     func didSelectMovie(_ movie: commonDetails) {
@@ -109,11 +109,11 @@ extension MoviesViewController {
     class func buildSimpleList() -> MoviesViewController {
         let adapter = MoviesSimpleListAdapter()
         let service = MoviesWebService()
-        let navStyle = NavigationBarTitle(title: "Cinemark")
+//        let navStyle = NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let searchBarAdapter = SearchBarTitleAdapter()
         let view = MoviesView(listAdapter: adapter, moviesSearchAdapter: searchBarAdapter)
-        let controller = MoviesViewController(moviesView: view, service: service ,navigationStyle: navStyle, errorView: error)
+        let controller = MoviesViewController(moviesView: view, service: service , errorView: error)
         return controller
     }
     
