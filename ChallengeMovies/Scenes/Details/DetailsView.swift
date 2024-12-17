@@ -10,11 +10,23 @@ import SwiftUI
 
 class DetailsView: UIView {
     
+    private var detailView: details?
+    
     private lazy var mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .systemRed
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
+    }()
+    
+    private lazy var blurEffect: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return blurEffectView
     }()
     
     private lazy var innerImageView: UIImageView = {
@@ -25,6 +37,8 @@ class DetailsView: UIView {
         imageView.heightAnchor.constraint(equalToConstant: 220).isActive = true
         imageView.layer.cornerRadius = 10
         imageView.backgroundColor = .blue
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -33,10 +47,22 @@ class DetailsView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.font = .systemFont(ofSize: 30, weight: .semibold)
+        label.font = .systemFont(ofSize: 25, weight: .semibold)
         label.text = "Lightyear"
         label.textColor = .white
         label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var launcTitleMovie: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        label.text = "Fecha de lanzamiento:"
+        label.textColor = .lightGray
+        label.font = UIFont.italicSystemFont(ofSize: 15)
+//        label.numberOfLines = 0
         return label
     }()
     
@@ -45,9 +71,9 @@ class DetailsView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.text = "Fecha de Lanzamiento"
+        label.text = "Fecha"
         label.textColor = .lightGray
-        label.font = UIFont.italicSystemFont(ofSize: 17)
+        label.font = UIFont.italicSystemFont(ofSize: 15)
         label.numberOfLines = 0
         return label
     }()
@@ -83,7 +109,7 @@ class DetailsView: UIView {
     private lazy var descriptionMovie: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Descipcion"
+        label.text = "Descipcion:"
         label.font = .systemFont(ofSize: 20, weight: .semibold)
         label.textColor = .textWhite
         return label
@@ -93,6 +119,7 @@ class DetailsView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "esta pelicula es muy bonita"
+        label.numberOfLines = 0
         label.textColor = .lightGray
         label.font = UIFont.italicSystemFont(ofSize: 17)
         return label
@@ -100,7 +127,7 @@ class DetailsView: UIView {
     
     private lazy var stkContentImage = HorizontalStack(subViews: [self.innerImageView, self.stkContentTitleInfo], distribution: .fill, spacing: 8)
     
-    private lazy var stkContentTitleInfo = VerticalStack(subViews: [self.titleMovie, self.launchMovie, self.stkStars], spacing: 2, distribution: .fill)
+    private lazy var stkContentTitleInfo = VerticalStack(subViews: [self.titleMovie, self.launcTitleMovie, self.launchMovie, self.stkStars], spacing: 2, distribution: .fill)
     
     private lazy var stkContentGender = VerticalStack(subViews: [self.titleGender, self.genders], spacing: 5)
     
@@ -118,6 +145,7 @@ class DetailsView: UIView {
     private func addElements() {
         self.backgroundColor = UIColor(named: "background_dark_white")
         self.addSubview(self.mainImageView)
+        self.mainImageView.addSubview(self.blurEffect)
         
         self.mainImageView.addSubview(self.stkContentImage)
         self.addSubview(self.stkContentGender)
@@ -130,6 +158,10 @@ class DetailsView: UIView {
             self.mainImageView.widthAnchor.constraint(equalToConstant: 400),
             self.mainImageView.heightAnchor.constraint(equalToConstant: 200),
             
+            self.blurEffect.topAnchor.constraint(equalTo: mainImageView.topAnchor),
+            self.blurEffect.bottomAnchor.constraint(equalTo: mainImageView.bottomAnchor),
+            self.blurEffect.leadingAnchor.constraint(equalTo: mainImageView.leadingAnchor),
+            self.blurEffect.trailingAnchor.constraint(equalTo: mainImageView.trailingAnchor),
             
             self.stkContentImage.leadingAnchor.constraint(equalTo: mainImageView.leadingAnchor,constant: 15),
             self.stkContentImage.trailingAnchor.constraint(equalTo: mainImageView.trailingAnchor),
@@ -138,18 +170,42 @@ class DetailsView: UIView {
             
             self.stkContentGender.topAnchor.constraint(equalTo: self.mainImageView.bottomAnchor, constant: 15),
             self.stkContentGender.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            self.stkContentGender.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.stkContentGender.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
             self.stkContentDescription.topAnchor.constraint(equalTo: self.stkContentGender.bottomAnchor, constant: 35),
             self.stkContentDescription.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            self.stkContentDescription.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            self.stkContentDescription.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
             
+        
         ])
+        
         self.stkStars.widthAnchor.constraint(equalTo: self.stkContentTitleInfo.widthAnchor, multiplier: 0.7).isActive = true
     }
     
-    func updateWith(_ movie: commonDetails) {
+    func updateWith(_ detail: details) {
+        self.detailView = detail
+        self.mainImageView.loadImageIn(detail.backdropPath) { image, urlString in
+            if urlString == self.detailView?.backdropPath {
+                self.mainImageView.image = image
+            }
+        }
+        self.innerImageView.loadImageIn(detail.posterPath) { image, urlString in
+            if urlString == self.detailView?.posterPath {
+                self.innerImageView.image = image
+            }
+        }
+        self.titleMovie.text = detail.title
+        self.launchMovie.text = detail.releaseDateFullFormat
+        let genres = detail.genres.compactMap { $0.name }.joined(separator: ", ")
+        self.genders.text = genres
         
+        if case detail.overview = "" {
+            self.descriptions.text = "No hay descripcion"
+        } else {
+            self.descriptions.text = detail.overview
+        }
+        
+        self.updateStars(rating: detail.voteAverage)
     }
     
     func updateStars(rating: Double) {

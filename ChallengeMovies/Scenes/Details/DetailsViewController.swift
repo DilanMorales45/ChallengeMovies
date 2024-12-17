@@ -11,12 +11,14 @@ class DetailsViewController: UIViewController {
     
     private let detailView: DetailsView
     private let navigationStyle: NavigationBarStyle
+    private let service: MoviesDetailWebService
     private let movie: commonDetails
     
-    init(detailView: DetailsView, movie: commonDetails, navigationStyle: NavigationBarStyle) {
+    init(detailView: DetailsView, movie: commonDetails, navigationStyle: NavigationBarStyle, service: MoviesDetailWebService) {
         self.detailView = detailView
         self.movie = movie
         self.navigationStyle = navigationStyle
+        self.service = service
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -32,20 +34,32 @@ class DetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationStyle.configure(self)
+        self.fetch()
     }
     
     private func configureView() {
         self.view = self.detailView
-        self.detailView.updateWith(self.movie)
-        self.detailView.updateStars(rating: 7.4)
+    }
+    
+    private func fetch() {
+        self.service.fetch { detailDTO in
+            guard let dto = detailDTO.first else {
+                print("No se pudieron obtener detalles de la película.")
+                return
+            }
+            
+            let detailsObject = details(dto: dto)
+            self.detailView.updateWith(detailsObject)
+        }
     }
 }
 
 extension DetailsViewController {
     class func buildWith(_ movie: commonDetails) -> DetailsViewController {
-        let navStyle =  NavigationBarSimpleShow(title: "Detalles")
+        let navStyle =  NavigationBarSimpleShow(title: "Detalle Pelicula")
+        let service = MoviesDetailWebService(idMovie: String(movie.id))
         let view = DetailsView()
-        let controller = DetailsViewController(detailView: view, movie: movie, navigationStyle: navStyle)
+        let controller = DetailsViewController(detailView: view, movie: movie, navigationStyle: navStyle, service: service)
         return controller
     }
 }

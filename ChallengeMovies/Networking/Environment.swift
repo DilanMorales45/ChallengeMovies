@@ -11,4 +11,8 @@ struct Environment {
     static var baseURL: String {
         "https://api.themoviedb.org/3/movie/popular?api_key="
     }
+    
+    static var detailsURL: String {
+        "https://api.themoviedb.org/3/movie/"
+    }
 }

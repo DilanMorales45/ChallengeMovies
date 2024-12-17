@@ -68,6 +68,7 @@ extension MoviesViewController: MoviesViewDelegate {
         let controller = DetailsViewController.buildWith(movies)
         self.navigationController?.pushViewController(controller, animated: true)
         print(movies.title)
+        print(movies.id)
     }
     
     

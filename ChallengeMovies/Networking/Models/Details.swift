@@ -1,17 +1,19 @@
 //
-//  Cars.swift
+//  Details.swift
 //  ChallengeMovies
 //
-//  Created by Dilan Alejandro Morales Estupinan on 28/11/24.
+//  Created by Mario Alfonso Orozco Pacheco on 16/12/24.
 //
 
 import Foundation
 
-class commonDetails: NSObject {
-    let id: Int
+class details: NSObject {
     let title: String
     let voteAverage: Double
     let posterPath: String
+    let backdropPath: String
+    let overview: String
+    let genres: [Genre]
     private let releaseDate: Date?
     
     var releaseDateFullFormat: String {
@@ -26,14 +28,13 @@ class commonDetails: NSObject {
         "\(self.title)"
     }
     
-    init(dto: Result) {
-        self.id = dto.id ?? 0
+    init(dto: DetailsDTO) {
         self.title = dto.title ?? ""
         self.voteAverage = dto.voteAverage ?? 0.0
         self.posterPath = "https://image.tmdb.org/t/p/original" + (dto.posterPath ?? "")
+        self.backdropPath = "https://image.tmdb.org/t/p/original" + (dto.backdropPath ?? "")
+        self.overview = dto.overview ?? ""
+        self.genres = dto.genres ?? []
         self.releaseDate = dto.releaseDate?.toDateWithFormat("yyyy-MM-dd")
     }
 }
-
-
-
