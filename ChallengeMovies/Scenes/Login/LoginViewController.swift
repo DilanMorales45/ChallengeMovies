@@ -7,17 +7,16 @@
 
 import UIKit
 
-// MARK: - Constants
-let LocalizeUserDefaultKey = "LocalizeUserDefaultKey"
-var LocalizeDefaultLanguage = "en"
-
 class LoginViewController: UIViewController {
     
     // MARK: - Properties
     private let loginView: LoginView
+    private let navigationStyle: NavigationBarStyle
+//    lazy var api = MoviesService()
     
-    init(loginView: LoginView){
+    init(loginView: LoginView, navigationStyle: NavigationBarStyle){
         self.loginView = loginView
+        self.navigationStyle = navigationStyle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,13 +41,15 @@ class LoginViewController: UIViewController {
     private func configureView() {
         self.view = self.loginView
         self.loginView.delegate = self
+        self.navigationStyle.configure(self)
+        self.loginView.backgroundColor = UIColor(named: "background_dark_white")
     }
     
     // MARK: - Alert Message Method
     
     private func showErrorAlertMessage(_ message: String) {
         let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Aceptar", style: .default) { _ in
+        let action = UIAlertAction(title: "LoginViewController.showErrorAlertMessage.AcceptButton".localized, style: .default) { _ in
             alertController.dismiss(animated: true)
         }
         alertController.addAction(action)
@@ -58,21 +59,21 @@ class LoginViewController: UIViewController {
     // MARK: - Language Change Methods
     private func refreshLanguage() {
         loginView.emailLabel.attributedPlaceholder = NSAttributedString(
-            string: "LoginViewController.refreshLanguage.EmailMessage".translate(),
+            string: "LoginViewController.refreshLanguage.EmailMessage".localized,
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
         )
-        loginView.accessButton.setTitle("LoginViewController.refreshLanguage.AccessButton".translate(), for: .normal)
+        loginView.accessButton.setTitle("LoginViewController.refreshLanguage.AccessButton".localized, for: .normal)
+        
+        NotificationCenter.default.post(name: Notification.Name("languageDidChange"), object: nil)
     }
 
     @objc private func changeLanguageSpanish() {
-        LocalizeDefaultLanguage = "es-419"
-        UserDefaults.standard.setValue(LocalizeDefaultLanguage, forKey: LocalizeUserDefaultKey)
+        LocalizationManager.shared.set(language: .es)
         refreshLanguage()
     }
 
     @objc private func changeLanguageEnglish() {
-        LocalizeDefaultLanguage = "en"
-        UserDefaults.standard.setValue(LocalizeDefaultLanguage, forKey: LocalizeUserDefaultKey)
+        LocalizationManager.shared.set(language: .en)
         refreshLanguage()
     }
     
@@ -82,22 +83,11 @@ class LoginViewController: UIViewController {
     
 }
 
-// MARK: - String Extension for Localization
-extension String {
-    func translate() -> String {
-        if let path = Bundle.main.path(forResource: LocalizeDefaultLanguage, ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            return NSLocalizedString(self, bundle: bundle, comment: "")
-        }
-        return ""
-    }
-}
-
 // MARK: - Build Extension for LoginViewController
 extension LoginViewController {
     class func build() -> LoginViewController {
         let view = LoginView()
-        let controller = LoginViewController(loginView: view)
+        let controller = LoginViewController(loginView: view, navigationStyle: NavigationBarHide())
         return controller
     }
 }
@@ -106,25 +96,28 @@ extension LoginViewController {
 extension LoginViewController: LoginViewDelegate {
     func loginView(_ view: LoginView, didSignWith user: String?) {
         guard let user = user, !user.isEmpty else {
-            self.showErrorAlertMessage("Ingresa un correo")
+            self.showErrorAlertMessage("LoginViewController.loginView.showErrorAlertMessage".localized)
             return
         }
         
         print("Bienvenido")
         
-        let moviesViewController = MoviesViewController()
-               
-    
-//        if let navigationController = self.navigationController {
-//            navigationController.pushViewController(moviesViewController, animated: true)
-//        } else {
-//            // En caso de que no esté dentro de un UINavigationController, lo presentamos de forma modal
-//            self.present(moviesViewController, animated: true, completion: nil)
+//        api.performRequest(for: .popularMovies) { movies in
+//            DispatchQueue.main.async {
+//                if let movies = movies {
+//                    for movie in movies {
+//                        print("Película: \(movie.title ?? ""), Fecha de estreno: \(movie.releaseDate ?? ""), Promedio de votos: \(movie.voteAverage ?? 0.0)")
+//                    }
+//                } else {
+//                    print("No se pudieron cargar las películas")
+//                }
+//            }
 //        }
         
-        
-        moviesViewController.modalPresentationStyle = .fullScreen
-        self.present(moviesViewController, animated: true, completion: nil)
+        let TabBar = TabBar.build()
+        self.navigationController?.pushViewController(TabBar, animated: true)
+//        self.navigationController?.popToViewController(LoginViewController.build(), animated: true)
+        self.navigationController?.viewControllers = [TabBar]
     }
 
 }

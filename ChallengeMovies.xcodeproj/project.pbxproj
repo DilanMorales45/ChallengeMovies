@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BBED4E5A2D089E75003A2D7B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BBED4E592D089E75003A2D7B /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		AD8158A92CD018DD00A46DFE /* ChallengeMovies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChallengeMovies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBED4E5A2D089E75003A2D7B /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = ChallengeMovies;
 			packageProductDependencies = (
+				BBED4E592D089E75003A2D7B /* Alamofire */,
 			);
 			productName = challengeMovies;
 			productReference = AD8158A92CD018DD00A46DFE /* ChallengeMovies.app */;
@@ -104,10 +110,13 @@
 			knownRegions = (
 				en,
 				Base,
-				"es-419",
+				es,
 			);
 			mainGroup = AD8158A02CD018DD00A46DFE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BBED4E582D089E75003A2D7B /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AD8158AA2CD018DD00A46DFE /* Products */;
 			projectDirPath = "";
@@ -336,6 +345,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BBED4E582D089E75003A2D7B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BBED4E592D089E75003A2D7B /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBED4E582D089E75003A2D7B /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AD8158A12CD018DD00A46DFE /* Project object */;
 }
