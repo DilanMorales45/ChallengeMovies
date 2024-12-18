@@ -17,8 +17,8 @@ class ViewController: UIViewController {
     }
     
     private func setupView() {
-        view.backgroundColor = .white
-        view.addSubview(errorView)
+        self.view.backgroundColor = UIColor(named: "background_dark_white")
+        self.view.addSubview(errorView)
         
         errorView.translatesAutoresizingMaskIntoConstraints = false
         

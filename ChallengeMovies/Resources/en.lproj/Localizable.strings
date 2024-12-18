@@ -8,3 +8,19 @@
 
 "LoginViewController.refreshLanguage.EmailMessage" = "Email";
 "LoginViewController.refreshLanguage.AccessButton" = "Log In";
+"LoginViewController.loginView.showErrorAlertMessage" = "Enter an email";
+"LoginViewController.showErrorAlertMessage.AcceptButton" = "Accept";
+
+"SearchBarView.refreshSearchBarLanguage.SearchPlaceholder" = "Search";
+
+"TabBar.refreshTabBarLanguage.movieTitle" = "Movies";
+"TabBar.refreshTabBarLanguage.favoriteTitle" = "Favorites";
+
+"MoviesCollectionViewCell.refreshDateTitleLanguage.lblReleaseDateInfo" = "Launch date:";
+
+"DetailsViewController.languageDidChange.dateTitle" = "Launch date:";
+"DetailsViewController.languageDidChange.genderTitle" = "Gender:";
+"DetailsViewController.languageDidChange.descriptionTitle" = "Description:";
+"DetailsViewController.languageDidChange.descriptionText" = "No description";
+
+"DetailsViewController.buildWith.detailTitle" = "Movie Details";
