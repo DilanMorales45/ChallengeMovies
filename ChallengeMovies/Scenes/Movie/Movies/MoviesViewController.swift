@@ -29,12 +29,12 @@ class MoviesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
+        self.fetchMovies()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 //        self.navigationStyle.configure(self)
-        self.fetchMovies()
     }
     
     private func configureView() {
@@ -109,7 +109,7 @@ extension MoviesViewController {
     
     class func buildSimpleList() -> MoviesViewController {
         let adapter = MoviesSimpleListAdapter()
-        let service = MoviesWebService()
+        let service = MoviesWebService(language: LocalizationManager.shared.get())
 //        let navStyle = NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let searchBarAdapter = SearchBarTitleAdapter()

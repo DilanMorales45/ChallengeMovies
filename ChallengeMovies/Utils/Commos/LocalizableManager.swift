@@ -28,6 +28,11 @@ class LocalizationManager {
     func set(language: SupportedLenguages){
         UserDefaults.standard.setValue(language.rawValue, forKey: LocalizeUserDefaultKey)
     }
+    
+    func get() -> String {
+        let languageCode = UserDefaults.standard.string(forKey: LocalizeUserDefaultKey) ?? ""
+        return languageCode
+    }
 }
 
 

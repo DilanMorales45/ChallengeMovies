@@ -12,7 +12,6 @@ protocol MoviesSimpleListAdapterDelegate: AnyObject {
 }
 
 class MoviesSimpleListAdapter: NSObject, ListAdapter {
-    
     var didSelectItem: DidSelectItem?
     
     private weak var collectionView: UICollectionView?

@@ -79,7 +79,7 @@ extension FavoritesViewController: FavoritesViewDelegate {
 extension FavoritesViewController {
     class func buildGridList() -> FavoritesViewController {
         let adapter = FavoriteGridListAdapter()
-        let service = MoviesWebService()
+        let service = MoviesWebService(language: LocalizationManager.shared.get())
 //        let navStyle =  NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let searchBarAdapter = SearchBarRealaseDate()

@@ -17,10 +17,12 @@ struct MoviesDetailWebService: MoviesDetailWebServiceProtocol{
     
     var idMovie: String
     var urlString: String
+    var language: String
     
-    init(idMovie: String) {
+    init(idMovie: String, language: String) {
         self.idMovie = idMovie
-        self.urlString = Environment.detailsURL + "\(idMovie)?api_key=752cd23fdb3336557bf3d8724e115570&language=es"
+        self.language = language
+        self.urlString = Environment.detailsURL + "\(idMovie)?api_key=752cd23fdb3336557bf3d8724e115570&language=\(language)"
     }
     
     func fetch(_ success: @escaping Success) {
@@ -28,10 +30,6 @@ struct MoviesDetailWebService: MoviesDetailWebServiceProtocol{
             guard let data = dataResponse.data else {
                 success([])
                 return
-            }
-            
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print("Data received: \(jsonString)")
             }
             
             do {

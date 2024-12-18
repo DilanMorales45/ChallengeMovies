@@ -49,7 +49,7 @@ class LoginViewController: UIViewController {
     
     private func showErrorAlertMessage(_ message: String) {
         let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Aceptar", style: .default) { _ in
+        let action = UIAlertAction(title: "LoginViewController.showErrorAlertMessage.AcceptButton".localized, style: .default) { _ in
             alertController.dismiss(animated: true)
         }
         alertController.addAction(action)
@@ -96,7 +96,7 @@ extension LoginViewController {
 extension LoginViewController: LoginViewDelegate {
     func loginView(_ view: LoginView, didSignWith user: String?) {
         guard let user = user, !user.isEmpty else {
-            self.showErrorAlertMessage("Ingresa un correo")
+            self.showErrorAlertMessage("LoginViewController.loginView.showErrorAlertMessage".localized)
             return
         }
         

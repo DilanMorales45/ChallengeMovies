@@ -12,6 +12,5 @@ protocol ListAdapter: AnyObject {
     var datasource: [Any] { get set }
     var didSelectItem: DidSelectItem? { get set }
     func setCollectionView(_ collectionView: UICollectionView)
-    
 }
 

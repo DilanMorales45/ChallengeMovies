@@ -90,11 +90,16 @@ class MoviesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCell 
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
+        self.refreshDateTitleLanguage()
         self.setupCell()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationManager.removeObserver()
     }
     
     func updateWith(_ data: Any) {
@@ -108,6 +113,10 @@ class MoviesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCell 
             }
         }
         self.updateStars(rating: movie.voteAverage)
+    }
+    
+    func updateLanguageMovie(_ dateText: String) {
+        self.lblReleaseDateInfo.text = dateText
     }
     
     func updateStars(rating: Double) {
@@ -130,6 +139,18 @@ class MoviesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCell 
             imageView.heightAnchor.constraint(equalToConstant: starSize).isActive = true
             self.stkStars.addArrangedSubview(imageView)
         }
+    }
+    
+    private func noticationLanguage() {
+        NotificationManager.addObserver(selector: #selector(languageDidChange))
+    }
+    
+    private func refreshDateTitleLanguage() {
+        self.lblReleaseDateInfo.text = "MoviesCollectionViewCell.refreshDateTitleLanguage.lblReleaseDateInfo".localized
+    }
+    
+    @objc func languageDidChange() {
+        self.refreshDateTitleLanguage()
     }
 }
 

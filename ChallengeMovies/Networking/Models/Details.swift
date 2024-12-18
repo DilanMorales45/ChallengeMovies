@@ -17,11 +17,26 @@ class details: NSObject {
     private let releaseDate: Date?
     
     var releaseDateFullFormat: String {
-        self.releaseDate?.toStringWithFormat("EEEE dd 'de' MMMM 'del' yyyy") ?? "Próximamente"
+        switch LocalizationManager.shared.get() {
+        case "en":
+            self.releaseDate?.toStringWithFormat("EEEE',' MMMM dd', ' yyyy") ?? "Coming soon"
+        case "es":
+            self.releaseDate?.toStringWithFormat("EEEE dd 'de' MMMM 'del' yyyy") ?? "Próximamente"
+        default:
+            self.releaseDate?.toStringWithFormat("EEEE dd 'de' MMMM 'del' yyyy") ?? "Próximamente"
+        }
     }
 
     var releaseDateShortFormat: String {
-        self.releaseDate?.toStringWithFormat("dd MMMM yyyy") ?? "Próximamente"
+        switch LocalizationManager.shared.get() {
+        case "en":
+            self.releaseDate?.toStringWithFormat("dd MMMM yyyy") ?? "Coming soon"
+        case "es":
+            self.releaseDate?.toStringWithFormat("dd MMMM yyyy") ?? "Próximamente"
+        default:
+            self.releaseDate?.toStringWithFormat("dd MMMM yyyy") ?? "Próximamente"
+        }
+        
     }
     
     var info: String {

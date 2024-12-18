@@ -1,12 +1,11 @@
 //
-//  DetailsViewNew.swift
+//  DetailsView.swift
 //  ChallengeMovies
 //
 //  Created by Mario Alfonso Orozco Pacheco on 15/12/24.
 //
 
 import UIKit
-import SwiftUI
 
 class DetailsView: UIView {
     
@@ -54,7 +53,7 @@ class DetailsView: UIView {
         return label
     }()
     
-    private lazy var launcTitleMovie: UILabel = {
+    private lazy var launchTitleMovie: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -101,6 +100,7 @@ class DetailsView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "accion,comedia"
+        label.numberOfLines = 0
         label.textColor = .lightGray
         label.font = UIFont.italicSystemFont(ofSize: 17)
         return label
@@ -127,7 +127,7 @@ class DetailsView: UIView {
     
     private lazy var stkContentImage = HorizontalStack(subViews: [self.innerImageView, self.stkContentTitleInfo], distribution: .fill, spacing: 8)
     
-    private lazy var stkContentTitleInfo = VerticalStack(subViews: [self.titleMovie, self.launcTitleMovie, self.launchMovie, self.stkStars], spacing: 2, distribution: .fill)
+    private lazy var stkContentTitleInfo = VerticalStack(subViews: [self.titleMovie, self.launchTitleMovie, self.launchMovie, self.stkStars], spacing: 2, distribution: .fill)
     
     private lazy var stkContentGender = VerticalStack(subViews: [self.titleGender, self.genders], spacing: 5)
     
@@ -196,15 +196,9 @@ class DetailsView: UIView {
         }
         self.titleMovie.text = detail.title
         self.launchMovie.text = detail.releaseDateFullFormat
-        let genres = detail.genres.compactMap { $0.name }.joined(separator: ", ")
+        let genres = detail.genres.compactMap { $0.name }.joined(separator: " • ")
         self.genders.text = genres
-        
-        if case detail.overview = "" {
-            self.descriptions.text = "No hay descripcion"
-        } else {
-            self.descriptions.text = detail.overview
-        }
-        
+        self.descriptions.text = detail.overview
         self.updateStars(rating: detail.voteAverage)
     }
     
@@ -222,24 +216,21 @@ class DetailsView: UIView {
         
         starImages.forEach { image in
             let imageView = UIImageView(image: image)
-            imageView.tintColor = .systemOrange // Color amarillo
+            imageView.tintColor = .systemOrange
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.widthAnchor.constraint(equalToConstant: starSize).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: starSize).isActive = true
             self.stkStars.addArrangedSubview(imageView)
         }
     }
-}
-
-struct DetailsViewNewRepresentable: UIViewRepresentable {
-    func makeUIView(context: Context) -> DetailsView {
-        let view = DetailsView()
-        return view
-    }
     
-    func updateUIView(_ uiView: DetailsView, context: Context) { }
+    func updateTitlesLanguage(_ dateTitle: String, _ genderTitle: String, _ descriptionTitle: String, _ descriptionText: String) {
+        self.launchTitleMovie.text = dateTitle
+        self.titleGender.text = genderTitle
+        self.descriptionMovie.text = descriptionTitle
+        if case descriptions.text = "" {
+            descriptions.text = descriptionText
+        }
+    }
 }
 
-struct DetailsViewNewPreview: PreviewProvider {
-    static var previews: some View { DetailsViewNewRepresentable() }
-}

@@ -19,7 +19,7 @@ extension Date {
     func toStringWithFormat(_ format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        dateFormatter.locale = Locale(identifier: "es_CO")
+        dateFormatter.locale = Locale(identifier: LocalizationManager.shared.get())
         return dateFormatter.string(from: self)
     }
 }
