@@ -21,20 +21,25 @@ struct NavigationBarHide: NavigationBarStyle {
     
 }
 
-struct NavigationBarSimpleShow: NavigationBarStyle {
+class NavigationBarSimpleShow: NavigationBarStyle {
     private let title: String
+    private var viewController: UIViewController?
     init(title: String) {
         self.title = title
     }
     func configure(_ viewController: UIViewController) {
+        self.viewController = viewController
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.title = self.title
         viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: nil, action: nil)
-//        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: , style: .plain, target: nil, action: nil)
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(self.back))
         viewController.navigationController?.navigationBar.tintColor = .textWhite
         viewController.navigationItem.rightBarButtonItem?.tintColor = .systemOrange
     }
     
+    @objc private func back() {
+        self.viewController?.navigationController?.popViewController(animated: true)
+    }
 }
 
 struct NavigationBarTitle: NavigationBarStyle {
