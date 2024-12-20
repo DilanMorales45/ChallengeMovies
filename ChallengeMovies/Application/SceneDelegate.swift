@@ -23,6 +23,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigationController = UINavigationController(rootViewController: loginViewController)
         self.window?.rootViewController = navigationController
+        
+//        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+//        
+//        if isLoggedIn {
+//            // Si la sesión está activa, mostramos la pantalla principal
+//            let mainViewController = TabBar.build() // Aquí asumes que tienes un MainViewController
+//            let navigationController = UINavigationController(rootViewController: mainViewController)
+//            self.window?.rootViewController = navigationController
+//        } else {
+//            // Si la sesión no está activa, mostramos la pantalla de login
+//            let loginViewController = LoginViewController.build()
+//            let navigationController = UINavigationController(rootViewController: loginViewController)
+//            self.window?.rootViewController = navigationController
+//        }
+        
         self.window?.makeKeyAndVisible()
     }
 
@@ -54,7 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
 
         // Save changes in the application's managed object context when the application transitions to the background.
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        PersistentStorage.shared.saveContext()
     }
 
 
