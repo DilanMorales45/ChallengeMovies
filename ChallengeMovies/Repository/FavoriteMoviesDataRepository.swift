@@ -48,6 +48,8 @@ class FavoriteMoviesDataRepository: FavoriteMoviesRepository {
     }
     
     private func getFavoriteMovies(byIdentifier id: Int64) -> FavoriteMovies? {
+        print("Buscando película con ID: \(id)")
+        let id = String(id)
         let fetchRequest = NSFetchRequest<FavoriteMovies>(entityName: "FavoriteMovies")
         let predicate = NSPredicate(format: "idMovie==%@", id as CVarArg)
         

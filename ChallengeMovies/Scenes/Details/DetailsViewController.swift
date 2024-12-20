@@ -13,12 +13,14 @@ class DetailsViewController: UIViewController {
     private let navigationStyle: NavigationBarStyle
     private let service: MoviesDetailWebService
     private let movie: commonDetails
+    private let favoriteService: FavoriteMovieService
     
-    init(detailView: DetailsView, movie: commonDetails, navigationStyle: NavigationBarStyle, service: MoviesDetailWebService) {
+    init(detailView: DetailsView, movie: commonDetails, navigationStyle: NavigationBarStyle, service: MoviesDetailWebService, favoriteService: FavoriteMovieService) {
         self.detailView = detailView
         self.movie = movie
         self.navigationStyle = navigationStyle
         self.service = service
+        self.favoriteService = favoriteService
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -65,14 +67,26 @@ class DetailsViewController: UIViewController {
     @objc func languageDidChange() {
         self.refreshLanguageTitles()
     }
+    
+    private static func setImageStar(for movie: commonDetails, with favoriteService: FavoriteMovieService) -> String {
+        if let favorite = favoriteService.get(byIdentifier: Int64(movie.id)) {
+            return "star.fill"
+        } else {
+            return "star"
+        }
+    }
 }
 
 extension DetailsViewController {
     class func buildWith(_ movie: commonDetails) -> DetailsViewController {
-        let navStyle =  NavigationBarSimpleShow(title: "DetailsViewController.buildWith.detailTitle".localized)
+        let favoriteService = FavoriteMovieService(repository: FavoriteMoviesDataRepository())
+        let navStyle = NavigationBarSimpleShow(
+              title: "DetailsViewController.buildWith.detailTitle".localized,
+              image: setImageStar(for: movie, with: FavoriteMovieService(repository: FavoriteMoviesDataRepository())), idMovie: movie.id, favoriteService: favoriteService
+          )
         let service = MoviesDetailWebService(idMovie: String(movie.id), language: LocalizationManager.shared.get())
         let view = DetailsView()
-        let controller = DetailsViewController(detailView: view, movie: movie, navigationStyle: navStyle, service: service)
+        let controller = DetailsViewController(detailView: view, movie: movie, navigationStyle: navStyle, service: service, favoriteService: FavoriteMovieService(repository: FavoriteMoviesDataRepository()))
         return controller
     }
 }
