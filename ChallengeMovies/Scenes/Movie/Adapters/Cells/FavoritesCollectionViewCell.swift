@@ -9,7 +9,7 @@ import UIKit
 
 class FavoritesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCell {
     
-    private var movie: commonDetails?
+    private var movie: details?
     
     private lazy var lblInfo: UILabel = {
         let lbl = UILabel()
@@ -35,6 +35,8 @@ class FavoritesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCe
         img.translatesAutoresizingMaskIntoConstraints = false
         img.backgroundColor = .systemIndigo
         img.heightAnchor.constraint(equalTo: img.widthAnchor, multiplier: 1.5).isActive = true
+        img.contentMode = .scaleAspectFill
+        img.clipsToBounds = true
         return img
     }()
     
@@ -66,7 +68,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell, GenericCollectionViewCe
     }
     
     func updateWith(_ data: Any) {
-        guard let movie = data as? commonDetails else { return }
+        guard let movie = data as? details else { return }
         self.movie = movie
         self.lblInfo.text = movie.info
         self.lblReleaseDate.text = movie.releaseDateShortFormat

@@ -87,7 +87,7 @@ class MoviesView: UIView {
     }
     
     func reloadData(_ datasource: [commonDetails]) {
-        self.moviesSearchAdapter.datasource = datasource
+        self.moviesSearchAdapter.datasourceMovie = datasource
         self.reloadCollectionViewWith(datasource)
     }
     

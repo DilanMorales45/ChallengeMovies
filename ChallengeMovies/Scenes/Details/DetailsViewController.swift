@@ -69,7 +69,7 @@ class DetailsViewController: UIViewController {
     }
     
     private static func setImageStar(for movie: commonDetails, with favoriteService: FavoriteMovieService) -> String {
-        if let favorite = favoriteService.get(byIdentifier: Int64(movie.id)) {
+        if favoriteService.get(byIdentifier: Int64(movie.id)) != nil {
             return "star.fill"
         } else {
             return "star"

@@ -41,4 +41,25 @@ struct MoviesDetailWebService: MoviesDetailWebServiceProtocol{
             }
         }
     }
+    
+    func fetchMultipleMoviesDetail(movieIds: [String], _ success: @escaping Success) {
+        let dispatchGroup = DispatchGroup()
+        var detailsDTOs = [DetailsDTO]()
+        
+        for movieId in movieIds {
+            dispatchGroup.enter()
+            
+            let service = MoviesDetailWebService(idMovie: movieId, language: language)
+            service.fetch { details in
+                if let detail = details.first {
+                    detailsDTOs.append(detail)
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            success(detailsDTOs)
+        }
+    }
 }

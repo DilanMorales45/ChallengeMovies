@@ -8,7 +8,9 @@
 import UIKit
 
 class SearchBarTitleAdapter: NSObject, SearchBarAdapter {
-    var datasource: [commonDetails] = []
+    var datasourceMovie: [commonDetails] = []
+    
+    var datasourceFavorite: [details] = []
     
     var didFilterItem: DidFilterItem?
     
@@ -21,9 +23,9 @@ extension SearchBarTitleAdapter: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.isEmpty {
-            self.didFilterItem?(self.datasource)
+            self.didFilterItem?(self.datasourceMovie)
         } else {
-            var result: [Any] = self.datasource.filter({ $0.info.localizedCaseInsensitiveContains(searchText) })
+            var result: [Any] = self.datasourceMovie.filter({ $0.info.localizedCaseInsensitiveContains(searchText) })
             result = !result.isEmpty ? result : ["No se encontraron resultados para tu busqueda:\n\n\(searchText)"]
             self.didFilterItem?(result)
         }

@@ -11,16 +11,18 @@ class FavoritesViewController: UIViewController {
   
     private let favoritesView: FavoritesView
     private let errorView: ErrorView
-    private let service: MoviesWebServiceProtocol
+    private let service: MoviesDetailWebService
+    private let favoriteService: FavoriteMovieService
 //    private let navigationStyle: NavigationBarStyle
-    private let localStorage: FavoritesLocalStorageProtocol
+//    private let localStorage: FavoritesLocalStorageProtocol
     
-    init(favoritesView: FavoritesView, service: MoviesWebServiceProtocol,  errorView: ErrorView, localStorage: FavoritesLocalStorageProtocol) {
+    init(favoritesView: FavoritesView, service: MoviesDetailWebService, favoriteService: FavoriteMovieService, errorView: ErrorView) {
         self.favoritesView = favoritesView
         self.service = service
 //        self.navigationStyle = navigationStyle
         self.errorView = errorView
-        self.localStorage = localStorage
+        self.favoriteService = favoriteService
+//        self.localStorage = localStorage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,7 +38,8 @@ class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 //        self.navigationStyle.configure(self)
-        self.fetchMovies()
+//        self.fetchMovies()
+        self.fetchFavorites()
     }
     
     private func configureView() {
@@ -44,16 +47,32 @@ class FavoritesViewController: UIViewController {
         self.favoritesView.delegate = self
     }
     
-    private func fetchMovies() {
+    private func fetchFavorites(){
+        
+        var returnIds: [String] = []
+        
+        if let list = self.favoriteService.getAll(), !list.isEmpty {
+            for movie in list {
+//                print(movie)
+                returnIds.append(String(movie.idMovie))
+            }
+        }
+        
+        self.service.fetchMultipleMoviesDetail(movieIds: returnIds) { detailDTO in
+            self.favoritesView.reloadData(detailDTO.toDetail)
+        }
+    }
+    
+//    private func fetchMovies() {
         //        self.service.fetch { moviesDTO in
         //            self.favoritesView.reloadCollectionView(moviesDTO.toMovies, searchText: nil)
         //        }
-        let result = self.localStorage.fetch()
-        self.favoritesView.reloadData(result.toMovies)
+//        let result = self.localStorage.fetch()
+//        self.favoritesView.reloadData(result.toMovies)
         //        self.allMovies = movies
         //        self.filteredMovies = movies
         //        self.favoritesView.reloadCollectionView(movies, searchText: nil)
-    }
+//    }
 }
 extension FavoritesViewController: FavoritesViewDelegate {
     func favoritesView(_ view: FavoritesView, didSelector movies: commonDetails) {
@@ -79,13 +98,14 @@ extension FavoritesViewController: FavoritesViewDelegate {
 extension FavoritesViewController {
     class func buildGridList() -> FavoritesViewController {
         let adapter = FavoriteGridListAdapter()
-        let service = MoviesWebService(language: LocalizationManager.shared.get())
+        let service = MoviesDetailWebService(idMovie: "", language: LocalizationManager.shared.get())
 //        let navStyle =  NavigationBarTitle(title: "Cinemark")
         let error = ErrorView()
         let searchBarAdapter = SearchBarRealaseDate()
         let view = FavoritesView(listAdapter: adapter, favoritesSearchAdapter: searchBarAdapter)
-        let local = FavoritesLocalStorageMock()
-        let controller = FavoritesViewController(favoritesView: view, service: service, errorView: error, localStorage: local)
+        let favoriteService = FavoriteMovieService(repository: FavoriteMoviesDataRepository())
+//        let local = FavoritesLocalStorageMock()
+        let controller = FavoritesViewController(favoritesView: view, service: service, favoriteService: favoriteService, errorView: error)
         return controller
     }
 }

@@ -23,26 +23,30 @@ struct NavigationBarHide: NavigationBarStyle {
 
 class NavigationBarSimpleShow: NavigationBarStyle {
     private let title: String
-    private let image: String
+    private var image: String
     private var viewController: UIViewController?
     private let idMovie: Int
     private let favoriteService: FavoriteMovieService
-    
+    private var isFavorite: Bool
     
     init(title: String, image: String, idMovie: Int, favoriteService: FavoriteMovieService) {
         self.title = title
         self.image = image
         self.idMovie = idMovie
         self.favoriteService = favoriteService
+        self.isFavorite = favoriteService.get(byIdentifier: Int64(idMovie)) != nil
     }
     
     func configure(_ viewController: UIViewController) {
         self.viewController = viewController
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.title = self.title
-        viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: self.image), style: .plain, target: self, action: #selector(self.addToFavorites))
+        self.updateFavoriteButton()
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(self.back))
         viewController.navigationController?.navigationBar.tintColor = .textWhite
+        
+        let rightButton = UIBarButtonItem(image: UIImage(systemName: self.image), style: .plain, target: self, action: #selector(self.addToFavorites))
+        viewController.navigationItem.rightBarButtonItem = rightButton
         viewController.navigationItem.rightBarButtonItem?.tintColor = .systemOrange
     }
     
@@ -50,22 +54,30 @@ class NavigationBarSimpleShow: NavigationBarStyle {
         self.viewController?.navigationController?.popViewController(animated: true)
     }
     
-    
-    @objc func addToFavorites() {
+    @objc private func addToFavorites() {
         if let favoriteMovie = self.favoriteService.get(byIdentifier: Int64(idMovie)) {
-            // La película ya está en favoritos, puedes mostrar un mensaje o realizar alguna acción.
             let validation = self.favoriteService.delete(record: favoriteMovie)
             print(validation)
             print("ya no esta en favoritos")
+            isFavorite = false
         } else {
             self.favoriteService.create(favoriteMovie: FavoriteMovie(idMovie: Int64(idMovie), favorite: true, id: UUID()))
             let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             debugPrint(path[0])
+
             print("pelicula guardada en favoritos")
-            
+            isFavorite = true
         }
+        
+        self.updateFavoriteButton()
     }
     
+    private func updateFavoriteButton() {
+        let favoriteImageName = isFavorite ? "star.fill" : "star"
+        if let rightButton = viewController?.navigationItem.rightBarButtonItem {
+            rightButton.image = UIImage(systemName: favoriteImageName)
+        }
+    }
 }
 
 struct NavigationBarTitle: NavigationBarStyle {

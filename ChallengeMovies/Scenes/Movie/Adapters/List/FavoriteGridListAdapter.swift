@@ -24,8 +24,9 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
     }
     
     private func setLayout() {
+        print(self.datasource)
         let layout = UICollectionViewCompositionalLayout { section, layoutEnv in
-            (self.datasource is [commonDetails]) ? FavoritesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
+            (self.datasource is [details]) ? FavoritesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
         }
         self.collectionView?.collectionViewLayout = layout
     }
@@ -45,8 +46,8 @@ extension FavoriteGridListAdapter: UICollectionViewDataSource {
 
 extension FavoriteGridListAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let movie = self.datasource[indexPath.row] as? commonDetails else { return }
-        self.didSelectItem?(movie)
+//        guard let movie = self.datasource[indexPath.row] as? details else { return }
+//        self.didSelectItem?(movie)
     }
 }
 
@@ -76,7 +77,7 @@ extension FavoriteGridListAdapter.Factory {
         
         init(item: Any) {
             switch item {
-            case is commonDetails:
+            case is details:
                 self = .movie
             case is String:
                 self = .error

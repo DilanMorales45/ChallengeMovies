@@ -75,8 +75,8 @@ class FavoritesView: UIView {
         }
     }
     
-    func reloadData(_ datasource: [commonDetails]) {
-        self.favoritesSearchAdapter.datasource = datasource
+    func reloadData(_ datasource: [details]) {
+        self.favoritesSearchAdapter.datasourceFavorite = datasource
         self.reloadCollectionViewWith(datasource)
     }
     
