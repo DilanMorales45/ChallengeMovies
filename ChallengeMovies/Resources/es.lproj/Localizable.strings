@@ -24,3 +24,7 @@
 "DetailsViewController.languageDidChange.descriptionText" = "No hay descripcion";
 
 "DetailsViewController.buildWith.detailTitle" = "Detalle Pelicula";
+
+"NavigationBarTitle.showMenu.alertSessionTitle" = "¿Deseas Cerrar Sesion?";
+"NavigationBarTitle.showMenu.alertSessionCancelTitle" = "Cancelar";
+"NavigationBarTitle.showMenu.alertSessionCloseSessionTitle" = "Cerrar Sesion";

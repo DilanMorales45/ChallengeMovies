@@ -80,16 +80,58 @@ class NavigationBarSimpleShow: NavigationBarStyle {
     }
 }
 
-struct NavigationBarTitle: NavigationBarStyle {
+class NavigationBarTitle: NavigationBarStyle {
     private let title: String
-    init(title: String) {
+    private let alertTitle: String
+    private let cancelTitle: String
+    private let logoutTitle: String
+    private var viewController: UIViewController?
+    
+    init(title: String, alertTitle: String, cancelTitle: String, logoutTitle: String) {
         self.title = title
+        self.alertTitle = alertTitle
+        self.cancelTitle = cancelTitle
+        self.logoutTitle = logoutTitle
     }
+    
     func configure(_ viewController: UIViewController) {
+        self.viewController = viewController
         viewController.title = self.title
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.navigationItem.hidesBackButton = false
         viewController.navigationController?.navigationBar.tintColor = UIColor(named: "text_white")
+        
+        let rightButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.right"), style: .plain, target: self, action: #selector(showMenu))
+        viewController.navigationItem.rightBarButtonItem = rightButton
     }
+    
+    @objc func showMenu() {
+        let alertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let logoutAction = UIAlertAction(title: logoutTitle, style: .destructive) { _ in
+            UserDefaults.standard.set(false, forKey: "isLoggedIn")
+            
+//            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+//                    // Create the login view controller
+//                let loginViewController = LoginViewController.build()
+//
+//                    // Set the root view controller of the window
+//                    sceneDelegate.setRootViewController(loginViewController)
+//                }
+            
+            let login = LoginViewController.build()
+            
+            self.viewController?.navigationController?.pushViewController(login, animated: true)
+            self.viewController?.navigationController?.viewControllers = [login]
+        }
+        
+        alertController.addAction(logoutAction)
+        
+        viewController?.present(alertController, animated: true)
+    }
+    
 }
 

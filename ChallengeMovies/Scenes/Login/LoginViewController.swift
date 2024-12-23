@@ -65,6 +65,7 @@ class LoginViewController: UIViewController {
         loginView.accessButton.setTitle("LoginViewController.refreshLanguage.AccessButton".localized, for: .normal)
         
         NotificationCenter.default.post(name: Notification.Name("languageDidChange"), object: nil)
+
     }
 
     @objc private func changeLanguageSpanish() {
@@ -79,6 +80,7 @@ class LoginViewController: UIViewController {
     
     @objc private func doSignIn() {
         loginView.delegate?.loginView(self.loginView, didSignWith: self.loginView.emailLabel.text)
+        self.loginView.emailLabel.text = ""
     }
     
 }
@@ -99,7 +101,7 @@ extension LoginViewController: LoginViewDelegate {
             self.showErrorAlertMessage("LoginViewController.loginView.showErrorAlertMessage".localized)
             return
         }
-//        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+        UserDefaults.standard.set(true, forKey: "isLoggedIn")
         print("Bienvenido")
         
 //        api.performRequest(for: .popularMovies) { movies in

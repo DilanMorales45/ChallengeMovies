@@ -10,7 +10,13 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    
+//    func setRootViewController(_ controller: UIViewController){
+//        let navigationController = UINavigationController(rootViewController: controller)
+//        self.window?.rootViewController = navigationController
+//        
+//        self.window?.makeKeyAndVisible()
+//    }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -19,24 +25,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: scene)
         
-        let loginViewController = LoginViewController.build()
+        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         
-        let navigationController = UINavigationController(rootViewController: loginViewController)
-        self.window?.rootViewController = navigationController
-        
-//        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
-//        
-//        if isLoggedIn {
-//            // Si la sesión está activa, mostramos la pantalla principal
-//            let mainViewController = TabBar.build() // Aquí asumes que tienes un MainViewController
-//            let navigationController = UINavigationController(rootViewController: mainViewController)
-//            self.window?.rootViewController = navigationController
-//        } else {
-//            // Si la sesión no está activa, mostramos la pantalla de login
-//            let loginViewController = LoginViewController.build()
-//            let navigationController = UINavigationController(rootViewController: loginViewController)
-//            self.window?.rootViewController = navigationController
-//        }
+        if isLoggedIn {
+            let mainViewController = TabBar.build()
+            let navigationController = UINavigationController(rootViewController: mainViewController)
+            self.window?.rootViewController = navigationController
+        } else {
+            let loginViewController = LoginViewController.build()
+            let navigationController = UINavigationController(rootViewController: loginViewController)
+            self.window?.rootViewController = navigationController
+        }
         
         self.window?.makeKeyAndVisible()
     }

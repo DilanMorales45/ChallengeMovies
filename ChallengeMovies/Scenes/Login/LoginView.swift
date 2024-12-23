@@ -109,23 +109,23 @@ class LoginView: UIView {
         NSLayoutConstraint.activate([
             self.titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             self.titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -40),
-            self.titleLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             
-            self.emailLabel.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor),
-            self.emailLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor, constant: 80),
+            self.emailLabel.centerXAnchor.constraint(equalTo: self.titleLabel.centerXAnchor),
+            self.emailLabel.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor, constant: 80),
             self.emailLabel.widthAnchor.constraint(equalToConstant: 200),
             self.emailLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            self.accessButton.centerXAnchor.constraint(equalTo: emailLabel.centerXAnchor),
-            self.accessButton.centerYAnchor.constraint(equalTo: emailLabel.centerYAnchor, constant: 50),
+            self.accessButton.centerXAnchor.constraint(equalTo: self.emailLabel.centerXAnchor),
+            self.accessButton.centerYAnchor.constraint(equalTo: self.emailLabel.centerYAnchor, constant: 50),
             self.accessButton.widthAnchor.constraint(equalToConstant: 100),
             self.accessButton.heightAnchor.constraint(equalToConstant: 40),
             
-            self.translateSpanishButton.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            self.translateSpanishButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            self.translateSpanishButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            self.translateSpanishButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             
-            self.translateEnglishButton.topAnchor.constraint(equalTo: translateSpanishButton.topAnchor),
-            self.translateEnglishButton.trailingAnchor.constraint(equalTo: translateSpanishButton.trailingAnchor, constant: -90)
+            self.translateEnglishButton.topAnchor.constraint(equalTo: self.translateSpanishButton.topAnchor),
+            self.translateEnglishButton.trailingAnchor.constraint(equalTo: self.translateSpanishButton.trailingAnchor, constant: -90)
         ])
     }
 }

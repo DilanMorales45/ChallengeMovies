@@ -60,7 +60,8 @@ class TabBar: UITabBarController {
     }
     
     private func manageNotifications() {
-        NotificationManager.addObserver(selector: #selector(languageDidChange))
+//        NotificationManager.addObserver(selector: #selector(languageDidChange))
+        NotificationCenter.default.addObserver(self, selector:  #selector(languageDidChange), name: Notification.Name("languageDidChange"), object: nil)
     }
     
     private func refreshTabBarLanguage() {
@@ -76,7 +77,7 @@ class TabBar: UITabBarController {
 
 extension TabBar {
     class func build() -> TabBar {
-        let navBar = NavigationBarTitle(title: "Cinemark")
+        let navBar = NavigationBarTitle(title: "Cinemark", alertTitle: "NavigationBarTitle.showMenu.alertSessionTitle".localized, cancelTitle: "NavigationBarTitle.showMenu.alertSessionCancelTitle".localized, logoutTitle: "NavigationBarTitle.showMenu.alertSessionCloseSessionTitle".localized)
         let controller = TabBar(navigationBarStyle: navBar)
         return controller
     }
