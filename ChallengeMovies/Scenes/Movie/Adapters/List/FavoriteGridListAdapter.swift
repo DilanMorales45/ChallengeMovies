@@ -26,7 +26,11 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
     private func setLayout() {
         print(self.datasource)
         let layout = UICollectionViewCompositionalLayout { section, layoutEnv in
-            (self.datasource is [details]) ? FavoritesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
+            if self.datasource.isEmpty {
+                ErrorCollectionViewCell.layoutSection
+            } else {
+                (self.datasource is [details]) ? FavoritesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
+            }
         }
         self.collectionView?.collectionViewLayout = layout
     }
@@ -34,13 +38,24 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
 
 extension FavoriteGridListAdapter: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.datasource.count
+        return datasource.isEmpty ? 1 : self.datasource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = self.datasource[indexPath.row]
-        let factory = Factory(item: item)
-        return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+//        let item = self.datasource[indexPath.row]
+//        let factory = Factory(item: item)
+//        return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+        
+        if self.datasource.isEmpty {
+                let errorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ErrorCollectionViewCell.identifier, for: indexPath) as! ErrorCollectionViewCell
+                errorCell.updateWith("Aun no tienen elementos favoritos agregados")
+                return errorCell
+            } else {
+                let item = self.datasource[indexPath.row]
+                let factory = Factory(item: item)
+                return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+            }
+        
     }
 }
 
