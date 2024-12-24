@@ -10,6 +10,8 @@
 "LoginViewController.refreshLanguage.AccessButton" = "Acceder";
 "LoginViewController.loginView.showErrorAlertMessage" = "Ingresa un correo";
 "LoginViewController.showErrorAlertMessage.AcceptButton" = "Aceptar";
+"LoginViewController.showErrorAlertMessage.Warning" = "Por favor ingresa un correo electrónico válido.";
+"LoginViewController.showErrorAlertMessage.WarningEmail" = "El correo electrónico debe contener '@' y '.com'.";
 
 "SearchBarView.refreshSearchBarLanguage.SearchPlaceholder" = "Buscar";
 

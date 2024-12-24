@@ -83,6 +83,9 @@ class LoginViewController: UIViewController {
         self.loginView.emailLabel.text = ""
     }
     
+    private func isValidEmail(_ email: String) -> Bool {
+        return email.contains("@") && email.contains(".com")
+    }
 }
 
 // MARK: - Build Extension for LoginViewController
@@ -98,12 +101,18 @@ extension LoginViewController {
 extension LoginViewController: LoginViewDelegate {
     func loginView(_ view: LoginView, didSignWith user: String?) {
         guard let user = user, !user.isEmpty else {
-            self.showErrorAlertMessage("LoginViewController.loginView.showErrorAlertMessage".localized)
+            self.showErrorAlertMessage("LoginViewController.showErrorAlertMessage.Warning".localized)
+            return
+        }
+        
+        if !isValidEmail(user) {
+            self.showErrorAlertMessage("LoginViewController.showErrorAlertMessage.WarningEmail".localized)
             return
         }
         UserDefaults.standard.set(true, forKey: "isLoggedIn")
         print("Bienvenido")
         
+
 //        api.performRequest(for: .popularMovies) { movies in
 //            DispatchQueue.main.async {
 //                if let movies = movies {
