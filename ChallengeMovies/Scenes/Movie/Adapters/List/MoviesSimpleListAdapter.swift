@@ -12,6 +12,7 @@ protocol MoviesSimpleListAdapterDelegate: AnyObject {
 }
 
 class MoviesSimpleListAdapter: NSObject, ListAdapter {
+    var didSelectItemFavorite: DidSelectItemFavorite?
     var didSelectItem: DidSelectItem?
     
     private weak var collectionView: UICollectionView?
@@ -30,7 +31,11 @@ class MoviesSimpleListAdapter: NSObject, ListAdapter {
     
     private func setLayout() {
         let layout = UICollectionViewCompositionalLayout { section, layoutEnv in
-            (self.datasource is [commonDetails]) ? MoviesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
+            if self.datasource.isEmpty {
+                ErrorCollectionViewCell.layoutSection
+            } else {
+                (self.datasource is [commonDetails]) ? MoviesCollectionViewCell.layoutSection : ErrorCollectionViewCell.layoutSection
+            }
         }
         self.collectionView?.collectionViewLayout = layout
     }
@@ -38,13 +43,22 @@ class MoviesSimpleListAdapter: NSObject, ListAdapter {
 
 extension MoviesSimpleListAdapter: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.datasource.count
+        return self.datasource.isEmpty ? 1 : self.datasource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = self.datasource[indexPath.row]
-        let factory = Factory(item: item)
-        return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+//        let item = self.datasource[indexPath.row]
+//        let factory = Factory(item: item)
+//        return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+        if self.datasource.isEmpty {
+            let errorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ErrorCollectionViewCell.identifier, for: indexPath) as! ErrorCollectionViewCell
+            errorCell.updateWith("Información no disponible temporalmente. Inténtalo más tarde")
+            return errorCell
+        } else {
+            let item = self.datasource[indexPath.row]
+            let factory = Factory(item: item)
+            return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+        }
     }
 }
 

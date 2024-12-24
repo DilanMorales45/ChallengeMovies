@@ -7,8 +7,8 @@
 
 import UIKit
 
-protocol FavoritesViewDelegate: AnyObject {
-    func favoritesView(_ view: FavoritesView, didSelector movies: commonDetails)
+@objc protocol FavoritesViewDelegate: AnyObject {
+    func favoritesView(_ view: FavoritesView, didSelector movies: details)
 }
 
 class FavoritesView: UIView {
@@ -18,7 +18,7 @@ class FavoritesView: UIView {
     // MARK: - UI Components
     let searchBarView = SearchBarView()
     let errorView = ErrorView()
-    private var listAdapter: ListAdapter
+    var listAdapter: ListAdapter
     private var favoritesSearchAdapter: SearchBarAdapter
     
     private lazy var collectionView: UICollectionView = {
@@ -69,6 +69,9 @@ class FavoritesView: UIView {
     
     private func configureAdapters() {
         self.listAdapter.setCollectionView(self.collectionView)
+        self.listAdapter.didSelectItemFavorite = { movie in
+            self.delegate?.favoritesView(self, didSelector: movie)
+        }
         self.favoritesSearchAdapter.setSearchBar(self.searchBarView.searchBar)
         self.favoritesSearchAdapter.didFilterItem = { result in
             self.reloadCollectionViewWith(result)

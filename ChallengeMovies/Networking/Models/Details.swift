@@ -8,6 +8,7 @@
 import Foundation
 
 class details: NSObject {
+    let id: Int
     let title: String
     let voteAverage: Double
     let posterPath: String
@@ -44,6 +45,7 @@ class details: NSObject {
     }
     
     init(dto: DetailsDTO) {
+        self.id = dto.id ?? 0
         self.title = dto.title ?? ""
         self.voteAverage = dto.voteAverage ?? 0.0
         self.posterPath = "https://image.tmdb.org/t/p/original" + (dto.posterPath ?? "")

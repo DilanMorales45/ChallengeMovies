@@ -45,6 +45,9 @@ class FavoritesViewController: UIViewController {
     private func configureView() {
         self.view = self.favoritesView
         self.favoritesView.delegate = self
+        if let adapter = self.favoritesView.listAdapter as? FavoriteGridListAdapter {
+            adapter.delegate = self
+        }
     }
     
     private func fetchFavorites(){
@@ -75,9 +78,18 @@ class FavoritesViewController: UIViewController {
 //    }
 }
 extension FavoritesViewController: FavoritesViewDelegate {
-    func favoritesView(_ view: FavoritesView, didSelector movies: commonDetails) {
+    func favoritesView(_ view: FavoritesView, didSelector movies: details) {
         
+        let controller = DetailsViewFavoriteController.buildWith(movies)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
+}
+
+extension FavoritesViewController: FavoriteGridListAdapterDelegate {
+    func didSelectMovie(_ movie: details) {
+        print(movie.title)
+    }
+    
 }
 
 //extension FavoritesViewController: SearchBarViewDelegate {

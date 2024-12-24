@@ -65,7 +65,7 @@ extension MoviesViewController: MoviesViewDelegate {
     }
     
     func moviesView(_ view: MoviesView, didSelector movies: commonDetails) {
-        let controller = DetailsViewController.buildWith(movies)
+        let controller = DetailsViewMovieController.buildWith(movies)
         self.navigationController?.pushViewController(controller, animated: true)
         print(movies.title)
         print(movies.id)

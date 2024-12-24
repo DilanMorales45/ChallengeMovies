@@ -1,25 +1,23 @@
 //
-//  DetailsViewController.swift
+//  DetailsViewFavoriteController.swift
 //  ChallengeMovies
 //
-//  Created by Mario Alfonso Orozco Pacheco on 15/12/24.
+//  Created by Mario Alfonso Orozco Pacheco on 23/12/24.
 //
 
 import UIKit
 
-class DetailsViewController: UIViewController {
+class DetailsViewFavoriteController: UIViewController {
     
     private let detailView: DetailsView
     private let navigationStyle: NavigationBarStyle
-    private let service: MoviesDetailWebService
-    private let movie: commonDetails
+    private let movie: details
     private let favoriteService: FavoriteMovieService
     
-    init(detailView: DetailsView, movie: commonDetails, navigationStyle: NavigationBarStyle, service: MoviesDetailWebService, favoriteService: FavoriteMovieService) {
+    init(detailView: DetailsView, movie: details, navigationStyle: NavigationBarStyle, favoriteService: FavoriteMovieService) {
         self.detailView = detailView
         self.movie = movie
         self.navigationStyle = navigationStyle
-        self.service = service
         self.favoriteService = favoriteService
         super.init(nibName: nil, bundle: nil)
     }
@@ -40,7 +38,7 @@ class DetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationStyle.configure(self)
-        self.fetch()
+        self.setDetailsFavorite()
     }
     
     private func configureView() {
@@ -48,12 +46,8 @@ class DetailsViewController: UIViewController {
         self.refreshLanguageTitles()
     }
     
-    private func fetch() {
-        self.service.fetch { detailDTO in
-            guard let dto = detailDTO.first else { return }
-            let detailsObject = details(dto: dto)
-            self.detailView.updateWith(detailsObject)
-        }
+    private func setDetailsFavorite() {
+        self.detailView.updateWith(movie)
     }
     
     private func noticationLanguage() {
@@ -68,7 +62,7 @@ class DetailsViewController: UIViewController {
         self.refreshLanguageTitles()
     }
     
-    private static func setImageStar(for movie: commonDetails, with favoriteService: FavoriteMovieService) -> String {
+    private static func setImageStar(for movie: details, with favoriteService: FavoriteMovieService) -> String {
         if favoriteService.get(byIdentifier: Int64(movie.id)) != nil {
             return "star.fill"
         } else {
@@ -77,16 +71,15 @@ class DetailsViewController: UIViewController {
     }
 }
 
-extension DetailsViewController {
-    class func buildWith(_ movie: commonDetails) -> DetailsViewController {
+extension DetailsViewFavoriteController {
+    class func buildWith(_ movie: details) -> DetailsViewFavoriteController {
         let favoriteService = FavoriteMovieService(repository: FavoriteMoviesDataRepository())
         let navStyle = NavigationBarSimpleShow(
               title: "DetailsViewController.buildWith.detailTitle".localized,
               image: setImageStar(for: movie, with: FavoriteMovieService(repository: FavoriteMoviesDataRepository())), idMovie: movie.id, favoriteService: favoriteService
           )
-        let service = MoviesDetailWebService(idMovie: String(movie.id), language: LocalizationManager.shared.get())
         let view = DetailsView()
-        let controller = DetailsViewController(detailView: view, movie: movie, navigationStyle: navStyle, service: service, favoriteService: FavoriteMovieService(repository: FavoriteMoviesDataRepository()))
+        let controller = DetailsViewFavoriteController(detailView: view, movie: movie, navigationStyle: navStyle, favoriteService: FavoriteMovieService(repository: FavoriteMoviesDataRepository()))
         return controller
     }
 }

@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol FavoriteGridListAdapterDelegate: AnyObject {
+    func didSelectMovie(_ movie: details)
+}
+
 class FavoriteGridListAdapter: NSObject, ListAdapter {
+    var didSelectItemFavorite: DidSelectItemFavorite?
     var didSelectItem: DidSelectItem?
     
     private weak var collectionView: UICollectionView?
     var datasource: [Any] = []
+    weak var delegate: FavoriteGridListAdapterDelegate?
     
     func setCollectionView(_ collectionView: UICollectionView) {
         self.collectionView = collectionView
@@ -38,7 +44,7 @@ class FavoriteGridListAdapter: NSObject, ListAdapter {
 
 extension FavoriteGridListAdapter: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return datasource.isEmpty ? 1 : self.datasource.count
+        return self.datasource.isEmpty ? 1 : self.datasource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -47,22 +53,22 @@ extension FavoriteGridListAdapter: UICollectionViewDataSource {
 //        return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
         
         if self.datasource.isEmpty {
-                let errorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ErrorCollectionViewCell.identifier, for: indexPath) as! ErrorCollectionViewCell
-                errorCell.updateWith("Aun no tienen elementos favoritos agregados")
-                return errorCell
-            } else {
-                let item = self.datasource[indexPath.row]
-                let factory = Factory(item: item)
-                return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
-            }
+            let errorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ErrorCollectionViewCell.identifier, for: indexPath) as! ErrorCollectionViewCell
+            errorCell.updateWith("Aun no tienes elementos favoritos agregados")
+            return errorCell
+        } else {
+            let item = self.datasource[indexPath.row]
+            let factory = Factory(item: item)
+            return factory.cell.buildIn(collectionView, indexPath: indexPath, data: item)
+        }
         
     }
 }
 
 extension FavoriteGridListAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard let movie = self.datasource[indexPath.row] as? details else { return }
-//        self.didSelectItem?(movie)
+        guard let movie = self.datasource[indexPath.row] as? details else { return }
+        self.didSelectItemFavorite?(movie)
     }
 }
 

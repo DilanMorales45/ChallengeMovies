@@ -25,7 +25,7 @@ extension SearchBarRealaseDate: UISearchBarDelegate {
         if searchText.isEmpty {
             self.didFilterItem?(self.datasourceFavorite)
         } else {
-            var result: [Any] = self.datasourceFavorite.filter({ $0.releaseDateShortFormat.localizedCaseInsensitiveContains(searchText) })
+            var result: [Any] = self.datasourceFavorite.filter({ $0.releaseDateShortFormat.localizedCaseInsensitiveContains(searchText) || $0.info.localizedCaseInsensitiveContains(searchText)})
             result = !result.isEmpty ? result : ["No se encontraron resultados para tu busqueda:\n\n\(searchText)"]
             self.didFilterItem?(result)
         }

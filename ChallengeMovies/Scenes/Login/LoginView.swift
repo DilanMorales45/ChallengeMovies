@@ -108,11 +108,11 @@ class LoginView: UIView {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             self.titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            self.titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -40),
+            self.titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -45),
             self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             
             self.emailLabel.centerXAnchor.constraint(equalTo: self.titleLabel.centerXAnchor),
-            self.emailLabel.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor, constant: 80),
+            self.emailLabel.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor, constant: 73),
             self.emailLabel.widthAnchor.constraint(equalToConstant: 200),
             self.emailLabel.heightAnchor.constraint(equalToConstant: 40),
             
